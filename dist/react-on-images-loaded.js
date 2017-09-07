@@ -62,28 +62,16 @@ var OnImagesLoaded = (function (_Component) {
 					imgs[i].addEventListener("load", _this.onLoadEvent);
 				}
 			});
+			this.onTimeoutEvent();
 		}
 	}, {
-		key: 'onLoadEvent',
-		value: function onLoadEvent() {
+		key: 'onTimeoutEvent',
+		value: function onTimeoutEvent() {
 			var _this2 = this;
 
-			var delay = this.props.delay ? this.props.delay : 500;
-			var timeout = this.props.timeout ? this.props.timeout : 5000;
+			var timeout = this.props.timeout || this.props.timeout == 0 ? this.props.timeout : 7000;
+			var delay = this.props.delay || this.props.delay == 0 ? this.props.delay : 500;
 			timeout = Math.max(timeout, delay);
-			this.setState({
-				loadCounter: this.state.loadCounter + 1
-			}, function () {
-				setTimeout(function () {
-					if (_this2.state.loaded === false) {
-						if (_this2.state.loadCounter === _this2.state.imageCount) {
-							_this2.setState({ loaded: true, timedOut: false }, function () {
-								_this2.props.onLoaded ? _this2.props.onLoaded() : null;
-							});
-						}
-					}
-				}, delay);
-			});
 			setTimeout(function () {
 				if (_this2.state.timedOut && _this2.state.loaded === false) {
 					_this2.setState({ loaded: true }, function () {
@@ -97,9 +85,29 @@ var OnImagesLoaded = (function (_Component) {
 			}, timeout);
 		}
 	}, {
+		key: 'onLoadEvent',
+		value: function onLoadEvent() {
+			var _this3 = this;
+
+			var delay = this.props.delay || this.props.delay == 0 ? this.props.delay : 500;
+			this.setState({
+				loadCounter: this.state.loadCounter + 1
+			}, function () {
+				setTimeout(function () {
+					if (_this3.state.loaded === false) {
+						if (_this3.state.loadCounter >= _this3.state.imageCount) {
+							_this3.setState({ loaded: true, timedOut: false }, function () {
+								_this3.props.onLoaded ? _this3.props.onLoaded() : null;
+							});
+						}
+					}
+				}, delay);
+			});
+		}
+	}, {
 		key: 'render',
 		value: function render() {
-			var _this3 = this;
+			var _this4 = this;
 
 			var currentClassName = undefined;
 			if (this.state.loaded) {
@@ -114,7 +122,7 @@ var OnImagesLoaded = (function (_Component) {
 				_react2['default'].createElement(
 					'div',
 					{ ref: function (ctx) {
-							_this3.imageLoad = ctx;
+							_this4.imageLoad = ctx;
 						}, className: currentClassName },
 					this.props.children
 				)

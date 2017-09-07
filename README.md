@@ -32,7 +32,7 @@ var OnImagesLoaded = require('react-on-images-loaded');
   onDidMount={this.runOnComponentDidMount.bind(this)}
   onLoaded={this.runAfterImagesLoaded.bind(this)}
   onTimeout={this.runTimeoutFunction.bind(this)}
-  timeout={5000}
+  timeout={7000}
   delay={0}
 >
   <div>
