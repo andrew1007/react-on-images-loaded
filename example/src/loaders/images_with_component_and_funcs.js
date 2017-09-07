@@ -13,7 +13,7 @@ const ImagesWithComponentAndFuncs = props => {
 
   const handleTimeout = () => {
     props.showError()
-    alert("hit timeout. running onTimeout function and mounting normally now")
+    alert("hit timeout. this is the onTimeout function being run and is mounting normally now")
   }
 
   return (
