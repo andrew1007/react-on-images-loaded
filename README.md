@@ -37,7 +37,7 @@ var OnImagesLoaded = require('react-on-images-loaded');
   <div>
     child html elements and components with images
   </div>
-</ComponentOnloadImages>
+</OnImagesLoaded>
 ```
 
 ### Properties
