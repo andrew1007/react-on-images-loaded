@@ -32,18 +32,34 @@ export default class OnImagesLoaded extends Component {
 				imgs[i].addEventListener("load", this.onLoadEvent)
 			}
 		})
+		this.onTimeoutEvent()
+	}
+
+	onTimeoutEvent() {
+		let timeout = this.props.timeout || this.props.timeout == 0 ? this.props.timeout : 7000
+		let delay = this.props.delay || this.props.delay == 0 ? this.props.delay : 500
+		timeout = Math.max(timeout, delay)
+		setTimeout(() => {
+			if (this.state.timedOut && this.state.loaded === false) {
+				this.setState({loaded: true}, () => {
+					if (this.props.onTimeout) {
+						this.props.onTimeout()
+					} else {
+						this.props.onLoaded ? this.props.onLoaded() : null
+					}
+				})
+			}
+		}, timeout)
 	}
 
 	onLoadEvent() {
-		let delay = this.props.delay ? this.props.delay : 500
-		let timeout = this.props.timeout ? this.props.timeout : 5000
-		timeout = Math.max(timeout, delay)
+		let delay = this.props.delay || this.props.delay == 0 ? this.props.delay : 500
 		this.setState({
 			loadCounter: this.state.loadCounter + 1
 		}, () => {
 			setTimeout(() => {
 				if (this.state.loaded === false) {
-					if (this.state.loadCounter === this.state.imageCount) {
+					if (this.state.loadCounter >= this.state.imageCount) {
 						this.setState({loaded: true, timedOut: false}, () => {
 							this.props.onLoaded ? this.props.onLoaded() : null
 						})
@@ -51,15 +67,7 @@ export default class OnImagesLoaded extends Component {
 				}
 			}, delay)
 		})
-		setTimeout(() => {
-			if (this.state.timedOut && this.state.loaded === false) {
-				this.setState({loaded: true}, () => {
-						this.props.onLoaded ? this.props.onLoaded() : null
-				})
-			}
-		}, timeout)
 	}
-
 
 	render() {
 		let currentClassName

@@ -27,10 +27,11 @@ var OnImagesLoaded = require('react-on-images-loaded');
 <OnImagesLoaded
   classNameOnMount='hidden-true'
   classNameOnLoaded='hidden-false'
-  placeholder={<div>something to render while loading</div>}
+  placeholder={<div>something to render during loading</div>}
   onWillMount={this.runOnComponentWillMount.bind(this)}
   onDidMount={this.runOnComponentDidMount.bind(this)}
   onLoaded={this.runAfterImagesLoaded.bind(this)}
+  onTimeout={this.runTimeoutFunction.bind(this)}
   timeout={5000}
   delay={0}
 >
@@ -49,8 +50,9 @@ var OnImagesLoaded = require('react-on-images-loaded');
 | onWillMount | Function to run on componentWillMount. default: null |
 | onDidMount | Function to run on componentDidMount. default: null |
 | onLoaded | Function to run after images are loaded. default: null |
+| onTimeout | Function if timeout is reached. default: onLoaded function (if it exists)|
 | placeholder | HTML element to render while images are loading. default: null |
-| timeout | Time (ms) to wait before resolving component before all images are loaded. default: 5000 |
+| timeout | Time (ms) to wait before resolving component before all images are loaded. default: 7000 |
 | delay | Time (ms) to wait before className change and function call when all images are loaded. default: 0 |
 
 ### Notes

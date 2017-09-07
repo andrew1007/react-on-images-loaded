@@ -3,7 +3,7 @@ import images from './images'
 import OnImagesLoaded from 'react-on-images-loaded'
 import LoadingSpinner from '../loading_spinner'
 
-const ImagesWithComponent = _ => {
+const ImagesWithComponent = props => {
   const imgs = images.map((url, idx) => (
     <div key={idx} className='image'>
       <img src={url + "?" + (new Date()).getTime()} className='image'/>
@@ -16,6 +16,7 @@ const ImagesWithComponent = _ => {
       classNameOnLoaded='hidden-false'
       placeholder={<LoadingSpinner/>}
       delay={500}
+      onTimeout={props.showError}
       >
         <div className='image-container'>
           {imgs}

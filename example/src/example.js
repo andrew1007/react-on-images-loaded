@@ -13,10 +13,12 @@ export default class App extends Component {
 		this.state = {
 			regular: false,
 			withComponent: false,
-			withFunc: false
+			withFunc: false,
+			showError: false
 		}
-		this.samples = ['regular', 'withComponent', 'withFunc', 'css']
+		this.samples = ['regular', 'withComponent', 'withFunc', 'css', 'showError']
 		this.toggleComponent = this.toggleComponent.bind(this)
+		this.showError = this.showError.bind(this)
 	}
 
 	toggleComponent(name) {
@@ -31,6 +33,19 @@ export default class App extends Component {
 		} else {
 			this.setState({[name]: prevState ? false : true})
 		}
+	}
+
+	showError() {
+		this.setState({showError: true})
+	}
+
+	error() {
+		return (
+			<p className='error'>
+				Oh no! OnImagesLoaded hit its default timeout cap (7000ms)
+				and is mounting normally now. Is your internet connection slow?
+			</p>
+		)
 	}
 
 	render () {
@@ -51,9 +66,12 @@ export default class App extends Component {
 							show css
 						</button>
 					</div>
+					<div>
+						{this.state.showError ? this.error() : null}
+					</div>
 					{ this.state.regular ? <RegularImageLoading/> : null}
-					{ this.state.withComponent ? <ImagesWithComponent/> : null}
-					{ this.state.withFunc ? <ImagesWithComponentAndFuncs/> : null}
+					{ this.state.withComponent ? <ImagesWithComponent showError={this.showError}/> : null}
+					{ this.state.withFunc ? <ImagesWithComponentAndFuncs showError={this.showError}/> : null}
 					{ this.state.css ? <ShowCss/> : null}
 				</div>
 			</div>
