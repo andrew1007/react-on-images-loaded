@@ -1,21 +1,10 @@
 # OnImagesLoaded
 
-__COMPONENT DESCRIPTION GOES HERE__
+[OnImagesLoaded](https://github.com/andrew1007/react-on-images-loaded) controls how child components and HTML elements render based on images being fully loaded.
 
-
-## Demo & Examples
+## Demo
 
 Live demo: [andrew1007.github.io/react-on-images-loaded](http://andrew1007.github.io/react-on-images-loaded/)
-
-To build the examples locally, run:
-
-```
-npm install
-npm start
-```
-
-Then open [`localhost:8000`](http://localhost:8000) in a browser.
-
 
 ## Installation
 
@@ -30,32 +19,46 @@ npm install react-on-images-loaded --save
 
 ## Usage
 
-__EXPLAIN USAGE HERE__
+Use `OnImagesLoaded` as a parent container to HTML elements. This package controls rendering based on whether or not all images have been fully loaded.
 
-```
+```jsx
 var OnImagesLoaded = require('react-on-images-loaded');
 
-<OnImagesLoaded>Example</OnImagesLoaded>
+<OnImagesLoaded
+  classNameOnMount='hidden-true'
+  classNameOnLoaded='hidden-false'
+  placeholder={<div>something to render while loading</div>}
+  onWillMount={this.runOnComponentWillMount.bind(this)}
+  onDidMount={this.runOnComponentDidMount.bind(this)}
+  onLoaded={this.runAfterImagesLoaded.bind(this)}
+  timeout={5000}
+  delay={0}
+>
+  <div>
+    child html elements and components with images
+  </div>
+</ComponentOnloadImages>
 ```
 
 ### Properties
 
-* __DOCUMENT PROPERTIES HERE__
+| Props | Information|
+|---|---|
+| classNameOnMount | Initial className to use while images are still loading. default: none|
+| classNameOnLoaded | className after images are loaded. default: none |
+| onWillMount | Function to run on componentWillMount. default: null |
+| onDidMount | Function to run on componentDidMount. default: null |
+| onLoaded | Function to run after images are loaded. default: null |
+| placeholder | HTML element to render while images are loading. default: null |
+| timeout | Time (ms) to wait before resolving component before all images are loaded. default: 5000 |
+| delay | Time (ms) to wait before className change and function call when all images are loaded. default: 0 |
 
 ### Notes
 
-__ADDITIONAL USAGE NOTES__
-
-
-## Development (`src`, `lib` and the build process)
-
-**NOTE:** The source code for the component is in `src`. A transpiled CommonJS version (generated with Babel) is available in `lib` for use with node.js, browserify and webpack. A UMD bundle is also built to `dist`, which can be included without the need for any build system.
-
-To build, watch and serve the examples (which will also watch the component source), run `npm start`. If you just want to watch changes to `src` and rebuild `lib`, run `npm run watch` (this is useful if you are working with `npm link`).
+From the demo, you can see that my main intention was to make a component to control className, for hidden -> visible, to prevent html elements pushing each other during image loading. But much more can be done than just that.
 
 ## License
 
-__PUT LICENSE HERE__
+MIT License
 
 Copyright (c) 2017 Andrew Yueh.
-
