@@ -1,0 +1,160 @@
+/*
+// Examples Stylesheet
+// -------------------
+*/
+
+body {
+	font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+	font-size: 14px;
+	color: #333;
+	margin: 0;
+	padding: 0;
+}
+
+button {
+	color: white;
+	background-color: #3498db;
+	padding: 20px;
+	font-size: 15px;
+	border: 0px;
+	margin: 20px;
+	border-radius: 30px;
+	outline: none;
+}
+
+button:hover {
+	transition: 300ms;
+	background-color: #7bb5db;
+	cursor: pointer;
+}
+
+a {
+	color: #08c;
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+.container {
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 720px;
+	padding: 1em;
+}
+
+.footer {
+	margin-top: 50px;
+	border-top: 1px solid #eee;
+	padding: 20px 0;
+	font-size: 12px;
+	color: #999;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	color: #222;
+	font-weight: 100;
+	margin: 0.5em 0;
+}
+
+label {
+	color: #999;
+	display: inline-block;
+	font-size: 0.85em;
+	font-weight: bold;
+	margin: 1em 0;
+	text-transform: uppercase;
+}
+
+.hint {
+	margin: 15px 0;
+	font-style: italic;
+	color: #999;
+}
+
+.subcontainer {
+	width: 80vw;
+}
+
+.button-container {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	border-bottom: 3px solid black;
+	padding-bottom: 40px;
+}
+
+.image {
+	display: inline-block;
+	height: 60px;
+	padding: 10px;
+}
+
+.hidden, .hidden-true, .hidden-false {
+  animation-timing-function: cubic-bezier(0.1, 0.8, 0.1, 1);
+  transition: opacity 500ms ease-in-out;
+}
+
+.hidden-true {
+  opacity: 0;
+}
+
+.hidden-false {
+  opacity: 1;
+}
+
+.container {
+	width: 99vw;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}
+
+.board-loader-container {
+	position: absolute;
+  display: flex;
+  justify-content: center;
+	align-items: center;
+	margin-top: 100px;
+	width: 80vw;
+}
+
+.image-container {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+}
+
+.board-loader {
+    border: 6px solid #f3f3f3; /* Light grey */
+    border-top: 6px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    animation: spin 2s linear infinite;
+    position: relative;
+}
+
+
+@keyframes spin {
+	0% { transform: rotate(0deg); }
+	100% { transform: rotate(360deg); }
+}
+
+.css-header {
+	margin-top: 40px;
+	border-bottom: 1px solid black;
+}
+
+.css-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.css-subcontainer {
+	width: 750px;
+}
