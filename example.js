@@ -59,10 +59,12 @@ var App = (function (_Component) {
 		this.state = {
 			regular: false,
 			withComponent: false,
-			withFunc: false
+			withFunc: false,
+			showError: false
 		};
-		this.samples = ['regular', 'withComponent', 'withFunc', 'css'];
+		this.samples = ['regular', 'withComponent', 'withFunc', 'css', 'showError'];
 		this.toggleComponent = this.toggleComponent.bind(this);
+		this.showError = this.showError.bind(this);
 	}
 
 	_createClass(App, [{
@@ -103,6 +105,20 @@ var App = (function (_Component) {
 			} else {
 				this.setState(_defineProperty({}, name, prevState ? false : true));
 			}
+		}
+	}, {
+		key: 'showError',
+		value: function showError() {
+			this.setState({ showError: true });
+		}
+	}, {
+		key: 'error',
+		value: function error() {
+			return _react2['default'].createElement(
+				'p',
+				{ className: 'error' },
+				'Oh no! OnImagesLoaded hit its default timeout cap (7000ms) and is mounting normally now. Is your internet connection slow?'
+			);
 		}
 	}, {
 		key: 'render',
@@ -147,9 +163,14 @@ var App = (function (_Component) {
 							'show css'
 						)
 					),
+					_react2['default'].createElement(
+						'div',
+						null,
+						this.state.showError ? this.error() : null
+					),
 					this.state.regular ? _react2['default'].createElement(_loadersRegular_image_loading2['default'], null) : null,
-					this.state.withComponent ? _react2['default'].createElement(_loadersImages_with_component2['default'], null) : null,
-					this.state.withFunc ? _react2['default'].createElement(_loadersImages_with_component_and_funcs2['default'], null) : null,
+					this.state.withComponent ? _react2['default'].createElement(_loadersImages_with_component2['default'], { showError: this.showError }) : null,
+					this.state.withFunc ? _react2['default'].createElement(_loadersImages_with_component_and_funcs2['default'], { showError: this.showError }) : null,
 					this.state.css ? _react2['default'].createElement(_show_css2['default'], null) : null
 				)
 			);
@@ -200,7 +221,7 @@ var _loading_spinner = require('../loading_spinner');
 
 var _loading_spinner2 = _interopRequireDefault(_loading_spinner);
 
-var ImagesWithComponent = function ImagesWithComponent(_) {
+var ImagesWithComponent = function ImagesWithComponent(props) {
   var imgs = _images2['default'].map(function (url, idx) {
     return _react2['default'].createElement(
       'div',
@@ -215,7 +236,8 @@ var ImagesWithComponent = function ImagesWithComponent(_) {
       classNameOnMount: 'hidden-true',
       classNameOnLoaded: 'hidden-false',
       placeholder: _react2['default'].createElement(_loading_spinner2['default'], null),
-      delay: 500
+      delay: 500,
+      onTimeout: props.showError
     },
     _react2['default'].createElement(
       'div',
@@ -253,7 +275,7 @@ var _loading_spinner = require('../loading_spinner');
 
 var _loading_spinner2 = _interopRequireDefault(_loading_spinner);
 
-var ImagesWithComponentAndFuncs = function ImagesWithComponentAndFuncs(_) {
+var ImagesWithComponentAndFuncs = function ImagesWithComponentAndFuncs(props) {
 
   var imgs = _images2['default'].map(function (url, idx) {
     return _react2['default'].createElement(
@@ -262,6 +284,11 @@ var ImagesWithComponentAndFuncs = function ImagesWithComponentAndFuncs(_) {
       _react2['default'].createElement('img', { src: url + "?" + new Date().getTime(), className: 'image' })
     );
   });
+
+  var handleTimeout = function handleTimeout() {
+    props.showError();
+    alert("hit timeout. this is the onTimeout function being run and is mounting normally now");
+  };
 
   return _react2['default'].createElement(
     _reactOnImagesLoaded2['default'],
@@ -277,7 +304,8 @@ var ImagesWithComponentAndFuncs = function ImagesWithComponentAndFuncs(_) {
       },
       onDidMount: function () {
         return alert('access to componentDidMount');
-      }
+      },
+      onTimeout: handleTimeout
     },
     _react2['default'].createElement(
       'div',
