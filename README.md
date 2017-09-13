@@ -1,5 +1,7 @@
 # OnImagesLoaded
 
+[![Build Status](https://travis-ci.org/andrew1007/react-on-images-loaded.svg?branch=master)](https://travis-ci.org/andrew1007/react-on-images-loaded)
+
 [OnImagesLoaded](https://github.com/andrew1007/react-on-images-loaded) gives you the event listener you've always wanted: onLoad after all images are completely loaded. For html elements wrapped inside OnImagesLoaded.
 
 ## Demo
