@@ -42,8 +42,8 @@ export default class App extends Component {
 	error() {
 		return (
 			<p className='error'>
-				Oh no! OnImagesLoaded hit its default timeout cap (7000ms)
-				and is mounting normally now. Is your internet connection slow?
+				{`Oh no! OnImagesLoaded hit its default timeout cap (7000ms)`}
+				{`and is mounting normally now. Is your internet connection slow?`}
 			</p>
 		)
 	}
@@ -60,7 +60,7 @@ export default class App extends Component {
 							using OnImagesLoaded
 						</button>
 						<button onClick={() => this.toggleComponent('withFunc')}>
-							OnImagesLoaded with lifecycle methods & onLoaded function call
+							{`OnImagesLoaded with lifecycle methods & onLoaded function call`}
 						</button>
 						<button onClick={() => this.toggleComponent('css')}>
 							show css
