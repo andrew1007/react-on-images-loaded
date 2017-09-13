@@ -117,7 +117,8 @@ var App = (function (_Component) {
 			return _react2['default'].createElement(
 				'p',
 				{ className: 'error' },
-				'Oh no! OnImagesLoaded hit its default timeout cap (7000ms) and is mounting normally now. Is your internet connection slow?'
+				'Oh no! OnImagesLoaded hit its default timeout cap (7000ms)',
+				'and is mounting normally now. Is your internet connection slow?'
 			);
 		}
 	}, {
