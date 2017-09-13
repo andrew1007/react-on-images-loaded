@@ -22,15 +22,21 @@ export default class OnImagesLoaded extends Component {
 
 	componentWillUnmount() {
 		this._mounted = false
-		this.removeImageEventListeners()
+		if (this.imgs.length !== 0) {
+			this.removeImageEventListeners()
+		}
 	}
 
 	componentDidMount() {
 		this._mounted = true
 		this.imgs = this.imageLoad.getElementsByTagName('img')
-		this.props.onDidMount ? this.props.onDidMount() : null
-		this.addImageEventListeners()
-		this.setOnTimeoutEvent()
+		if (this.imgs.length === 0) {
+			this.props.onLoaded ? this.props.onLoaded() : this.props.onTimeout()
+		} else {
+			this.props.onDidMount ? this.props.onDidMount() : null
+			this.addImageEventListeners()
+			this.setOnTimeoutEvent()
+		}
 	}
 
 	addImageEventListeners() {
@@ -72,7 +78,6 @@ export default class OnImagesLoaded extends Component {
 	}
 
 	_imagesLoaded() {
-		console.log(this.state);
 		return this.state.loadCounter >= this.state.imageCount
 	}
 
