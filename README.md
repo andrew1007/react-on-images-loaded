@@ -46,7 +46,7 @@ var OnImagesLoaded = require('react-on-images-loaded');
 ### Notes
 Big changes, going into v2.x.x. All you get (and all you need) is the <code>onLoaded</code> and <code>onTimeout</code> function. All depreciated props will never be removed.
 
-v1.x.x was bloated. It gives too many options for such a basic concept. Every depreciated prop can be handled with <code>this.setState</code>. The following are depreciated from v1.x.x:
+v1.x.x was bloated. It gives too many options for such a basic concept. Every depreciated prop can be handled with <code>this.setState</code> or is completely unnecessary. The following are depreciated from v1.x.x:
 
 | Depreciated props | Information|
 |---|---|
