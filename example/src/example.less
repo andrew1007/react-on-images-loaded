@@ -47,7 +47,6 @@ a:hover {
 .footer {
 	margin-top: 50px;
 	border-top: 1px solid #eee;
-	padding: 20px 0;
 	font-size: 12px;
 	color: #999;
 }
@@ -99,6 +98,8 @@ label {
 
 .hidden-true {
   opacity: 0;
+	height: 0px;
+	overflow: hidden;
 }
 
 .hidden-false {
@@ -128,7 +129,14 @@ label {
 	flex-wrap: wrap;
 }
 
-.board-loader {
+.loading-spinner-container {
+	display: flex;
+	justify-content: center;
+	width: 100%;
+	margin-top: 150px;
+}
+
+.loading-spinner {
     border: 6px solid #f3f3f3; /* Light grey */
     border-top: 6px solid #3498db; /* Blue */
     border-radius: 50%;

@@ -13,6 +13,8 @@ const ShowCss = _ => (
 
 .hidden-true {
   opacity: 0;
+  height: 0px;
+  overflow: hidden;
 }
 
 .hidden-false {

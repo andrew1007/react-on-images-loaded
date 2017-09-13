@@ -7,7 +7,8 @@ export default class OnImagesLoaded extends Component {
 			loaded: false,
 			loadCounter: 0,
 			imageCount: 0,
-			timedOut: true
+			timedOut: true,
+			className: ''
 		}
 		this.onLoadEvent = this.onLoadEvent.bind(this)
 	}
@@ -71,6 +72,7 @@ export default class OnImagesLoaded extends Component {
 	}
 
 	_imagesLoaded() {
+		console.log(this.state);
 		return this.state.loadCounter >= this.state.imageCount
 	}
 
@@ -80,20 +82,15 @@ export default class OnImagesLoaded extends Component {
 		})
 	}
 
-	_depricatedClassHandler() {
-		if (this.props.className) {
-			return className
-		} else {
-			return this.state.loaded ? this.props.classNameOnLoaded : this.props.classNameOnMount
-		}
-	}
-
 	render() {
-		const className = this._depricatedClassHandler()
+		let className
+		if (this.props.classNameOnLoaded || this.props.classNameOnMount) {
+			className = this.state.loaded ? this.props.classNameOnLoaded : this.props.classNameOnMount
+		}
 		return (
 			<div>
 				{this.state.loaded ? null : this.props.placeholder}
-				<div ref={(ctx) => { this.imageLoad = ctx}} className={className}>
+				<div ref={(ctx) => { this.imageLoad = ctx}} className={className ? className : null}>
 					{this.props.children}
 				</div>
 			</div>

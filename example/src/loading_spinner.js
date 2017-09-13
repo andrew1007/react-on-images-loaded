@@ -1,8 +1,8 @@
 import React from 'react'
 
 const LoadingSpinner = _ => (
-  <div className="board-loader-container">
-    <div className="board-loader"/>
+  <div className="loading-spinner-container">
+    <div className="loading-spinner"/>
   </div>
 )
 

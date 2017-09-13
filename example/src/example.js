@@ -13,10 +13,9 @@ export default class App extends Component {
 		this.state = {
 			regular: false,
 			withComponent: false,
-			withFunc: false,
 			showError: false
 		}
-		this.samples = ['regular', 'withComponent', 'withFunc', 'css', 'showError']
+		this.samples = ['regular', 'withComponent', 'css', 'showError']
 		this.toggleComponent = this.toggleComponent.bind(this)
 		this.showError = this.showError.bind(this)
 	}
@@ -58,9 +57,6 @@ export default class App extends Component {
 						</button>
 						<button onClick={() => this.toggleComponent('withComponent')}>
 							using OnImagesLoaded
-						</button>
-						<button onClick={() => this.toggleComponent('withFunc')}>
-							{`OnImagesLoaded with lifecycle methods & onLoaded function call`}
 						</button>
 						<button onClick={() => this.toggleComponent('css')}>
 							show css
