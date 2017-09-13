@@ -4,7 +4,6 @@ import OnImagesLoaded from 'react-on-images-loaded'
 import RegularImageLoading from './loaders/regular_image_loading'
 import ImagesWithComponent from './loaders/images_with_component'
 import LoadingSpinner from './loading_spinner'
-import ImagesWithComponentAndFuncs from './loaders/images_with_component_and_funcs'
 import ShowCss from './show_css'
 
 export default class App extends Component {
@@ -67,7 +66,6 @@ export default class App extends Component {
 					</div>
 					{ this.state.regular ? <RegularImageLoading/> : null}
 					{ this.state.withComponent ? <ImagesWithComponent showError={this.showError}/> : null}
-					{ this.state.withFunc ? <ImagesWithComponentAndFuncs showError={this.showError}/> : null}
 					{ this.state.css ? <ShowCss/> : null}
 				</div>
 			</div>
