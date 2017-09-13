@@ -30,7 +30,8 @@ var OnImagesLoaded = (function (_Component) {
 			loaded: false,
 			loadCounter: 0,
 			imageCount: 0,
-			timedOut: true
+			timedOut: true,
+			className: ''
 		};
 		this.onLoadEvent = this.onLoadEvent.bind(this);
 	}
@@ -39,93 +40,100 @@ var OnImagesLoaded = (function (_Component) {
 		key: 'componentWillMount',
 		value: function componentWillMount() {
 			this.props.onWillMount ? this.props.onWillMount() : null;
+			var tempTimeout = this.props.timeout || this.props.timeout == 0 ? this.props.timeout : 7000;
+			this.delay = this.props.delay || this.props.delay == 0 ? this.props.delay : 500;
+			this.timeout = Math.max(tempTimeout, this.delay);
 		}
 	}, {
 		key: 'componentWillUnmount',
 		value: function componentWillUnmount() {
 			this._mounted = false;
-			var imgs = this.imageLoad.getElementsByTagName('img');
-			for (var i = 0; i < imgs.length; i++) {
-				imgs[i].removeEventListener("load", this.onLoadEvent);
-			}
+			this.removeImageEventListeners();
 		}
 	}, {
 		key: 'componentDidMount',
 		value: function componentDidMount() {
+			this._mounted = true;
+			this.imgs = this.imageLoad.getElementsByTagName('img');
+			this.props.onDidMount ? this.props.onDidMount() : null;
+			this.addImageEventListeners();
+			this.setOnTimeoutEvent();
+		}
+	}, {
+		key: 'addImageEventListeners',
+		value: function addImageEventListeners() {
 			var _this = this;
 
-			this._mounted = true;
-			this.props.onDidMount ? this.props.onDidMount() : null;
-			var imgs = this.imageLoad.getElementsByTagName('img');
-			if (!this.state.loaded && this._mounted) {
-				this.setState({ imageCount: imgs.length }, function () {
-					for (var i = 0; i < imgs.length; i++) {
-						imgs[i].addEventListener("load", _this.onLoadEvent);
-					}
-				});
-				this.onTimeoutEvent();
-			}
-		}
-	}, {
-		key: 'onTimeoutEvent',
-		value: function onTimeoutEvent() {
-			var _this2 = this;
-
-			var timeout = this.props.timeout || this.props.timeout == 0 ? this.props.timeout : 7000;
-			var delay = this.props.delay || this.props.delay == 0 ? this.props.delay : 500;
-			timeout = Math.max(timeout, delay);
-			setTimeout(function () {
-				if (_this2.state.timedOut && !_this2.state.loaded && _this2._mounted) {
-					_this2.setState({ loaded: true }, function () {
-						if (_this2.props.onTimeout) {
-							_this2.props.onTimeout();
-						} else {
-							_this2.props.onLoaded ? _this2.props.onLoaded() : null;
-						}
-					});
-				}
-			}, timeout);
-		}
-	}, {
-		key: 'onLoadEvent',
-		value: function onLoadEvent() {
-			var _this3 = this;
-
-			var delay = this.props.delay || this.props.delay == 0 ? this.props.delay : 500;
-			this.setState({
-				loadCounter: this.state.loadCounter + 1
-			}, function () {
-				if (!_this3.state.loaded && _this3._mounted) {
-					setTimeout(function () {
-						if (_this3.state.loadCounter >= _this3.state.imageCount && !_this3.state.loaded && _this3._mounted) {
-							_this3.setState({ loaded: true, timedOut: false }, function () {
-								_this3.props.onLoaded ? _this3.props.onLoaded() : null;
-							});
-						}
-					}, delay);
+			this.setState({ imageCount: this.imgs.length }, function () {
+				for (var i = 0; i < _this.imgs.length; i++) {
+					_this.imgs[i].addEventListener('load', _this.onLoadEvent);
 				}
 			});
 		}
 	}, {
-		key: 'depricatedClassHandler',
-		value: function depricatedClassHandler() {
-			var currentClassName = undefined;
-			if (this.props.className) {
-				return className;
-			} else {
-				if (this.state.loaded) {
-					return this.props.classNameOnLoaded;
-				} else {
-					return this.props.classNameOnMount;
-				}
+		key: 'removeImageEventListeners',
+		value: function removeImageEventListeners() {
+			for (var i = 0; i < this.imgs.length; i++) {
+				this.imgs[i].removeEventListener("load", this.onLoadEvent);
 			}
+		}
+	}, {
+		key: 'setOnTimeoutEvent',
+		value: function setOnTimeoutEvent() {
+			var _this2 = this;
+
+			setTimeout(function () {
+				_this2._mounted && !_this2.state.loaded ? _this2._runOnTimeoutFunction() : null;
+			}, this.timeout);
+		}
+	}, {
+		key: '_runOnTimeoutFunction',
+		value: function _runOnTimeoutFunction() {
+			var _this3 = this;
+
+			this.setState({ loaded: true }, function () {
+				if (_this3.props.onTimeout) {
+					_this3.props.onTimeout();
+				} else {
+					_this3.props.onLoaded ? _this3.props.onLoaded() : null;
+				}
+			});
+		}
+	}, {
+		key: 'onLoadEvent',
+		value: function onLoadEvent() {
+			var _this4 = this;
+
+			this.setState({ loadCounter: this.state.loadCounter + 1 }, function () {
+				setTimeout(function () {
+					_this4._mounted && _this4._imagesLoaded() && !_this4.state.loaded ? _this4._runOnLoadFunction() : null;
+				}, _this4.delay);
+			});
+		}
+	}, {
+		key: '_imagesLoaded',
+		value: function _imagesLoaded() {
+			console.log(this.state);
+			return this.state.loadCounter >= this.state.imageCount;
+		}
+	}, {
+		key: '_runOnLoadFunction',
+		value: function _runOnLoadFunction() {
+			var _this5 = this;
+
+			this.setState({ loaded: true, timedOut: false }, function () {
+				_this5.props.onLoaded ? _this5.props.onLoaded() : null;
+			});
 		}
 	}, {
 		key: 'render',
 		value: function render() {
-			var _this4 = this;
+			var _this6 = this;
 
-			var className = this.depricatedClassHandler();
+			var className = undefined;
+			if (this.props.classNameOnLoaded || this.props.classNameOnMount) {
+				className = this.state.loaded ? this.props.classNameOnLoaded : this.props.classNameOnMount;
+			}
 			return _react2['default'].createElement(
 				'div',
 				null,
@@ -133,8 +141,8 @@ var OnImagesLoaded = (function (_Component) {
 				_react2['default'].createElement(
 					'div',
 					{ ref: function (ctx) {
-							_this4.imageLoad = ctx;
-						}, className: className },
+							_this6.imageLoad = ctx;
+						}, className: className ? className : null },
 					this.props.children
 				)
 			);

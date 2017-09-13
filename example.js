@@ -41,10 +41,6 @@ var _loading_spinner = require('./loading_spinner');
 
 var _loading_spinner2 = _interopRequireDefault(_loading_spinner);
 
-var _loadersImages_with_component_and_funcs = require('./loaders/images_with_component_and_funcs');
-
-var _loadersImages_with_component_and_funcs2 = _interopRequireDefault(_loadersImages_with_component_and_funcs);
-
 var _show_css = require('./show_css');
 
 var _show_css2 = _interopRequireDefault(_show_css);
@@ -59,10 +55,9 @@ var App = (function (_Component) {
 		this.state = {
 			regular: false,
 			withComponent: false,
-			withFunc: false,
 			showError: false
 		};
-		this.samples = ['regular', 'withComponent', 'withFunc', 'css', 'showError'];
+		this.samples = ['regular', 'withComponent', 'css', 'showError'];
 		this.toggleComponent = this.toggleComponent.bind(this);
 		this.showError = this.showError.bind(this);
 	}
@@ -152,13 +147,6 @@ var App = (function (_Component) {
 						_react2['default'].createElement(
 							'button',
 							{ onClick: function () {
-									return _this2.toggleComponent('withFunc');
-								} },
-							'OnImagesLoaded with lifecycle methods & onLoaded function call'
-						),
-						_react2['default'].createElement(
-							'button',
-							{ onClick: function () {
 									return _this2.toggleComponent('css');
 								} },
 							'show css'
@@ -171,7 +159,6 @@ var App = (function (_Component) {
 					),
 					this.state.regular ? _react2['default'].createElement(_loadersRegular_image_loading2['default'], null) : null,
 					this.state.withComponent ? _react2['default'].createElement(_loadersImages_with_component2['default'], { showError: this.showError }) : null,
-					this.state.withFunc ? _react2['default'].createElement(_loadersImages_with_component_and_funcs2['default'], { showError: this.showError }) : null,
 					this.state.css ? _react2['default'].createElement(_show_css2['default'], null) : null
 				)
 			);
@@ -186,7 +173,7 @@ exports['default'] = App;
 _reactDom2['default'].render(_react2['default'].createElement(App, null), document.getElementById('app'));
 module.exports = exports['default'];
 
-},{"./loaders/images_with_component":3,"./loaders/images_with_component_and_funcs":4,"./loaders/regular_image_loading":5,"./loading_spinner":6,"./show_css":7,"react":undefined,"react-dom":undefined,"react-on-images-loaded":undefined}],2:[function(require,module,exports){
+},{"./loaders/images_with_component":3,"./loaders/regular_image_loading":4,"./loading_spinner":5,"./show_css":6,"react":undefined,"react-dom":undefined,"react-on-images-loaded":undefined}],2:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -204,15 +191,23 @@ Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _images = require('./images');
+var _images2 = require('./images');
 
-var _images2 = _interopRequireDefault(_images);
+var _images3 = _interopRequireDefault(_images2);
 
 var _reactOnImagesLoaded = require('react-on-images-loaded');
 
@@ -222,104 +217,74 @@ var _loading_spinner = require('../loading_spinner');
 
 var _loading_spinner2 = _interopRequireDefault(_loading_spinner);
 
-var ImagesWithComponent = function ImagesWithComponent(props) {
-  var imgs = _images2['default'].map(function (url, idx) {
-    return _react2['default'].createElement(
-      'div',
-      { key: idx, className: 'image' },
-      _react2['default'].createElement('img', { src: url + "?" + new Date().getTime(), className: 'image' })
-    );
-  });
+var ImagesWithComponent = (function (_Component) {
+  _inherits(ImagesWithComponent, _Component);
 
-  return _react2['default'].createElement(
-    _reactOnImagesLoaded2['default'],
-    {
-      classNameOnMount: 'hidden-true',
-      classNameOnLoaded: 'hidden-false',
-      placeholder: _react2['default'].createElement(_loading_spinner2['default'], null),
-      delay: 500,
-      onTimeout: props.showError
-    },
-    _react2['default'].createElement(
-      'div',
-      { className: 'image-container' },
-      imgs
-    )
-  );
-};
+  function ImagesWithComponent(props) {
+    _classCallCheck(this, ImagesWithComponent);
+
+    _get(Object.getPrototypeOf(ImagesWithComponent.prototype), 'constructor', this).call(this, props);
+    this.state = {
+      loaded: false
+    };
+  }
+
+  _createClass(ImagesWithComponent, [{
+    key: 'images',
+    value: function images() {
+      var imgs = _images3['default'].map(function (url, idx) {
+        return _react2['default'].createElement(
+          'div',
+          { key: idx, className: 'image' },
+          _react2['default'].createElement('img', { src: url + "?" + new Date().getTime(), className: 'image' })
+        );
+      });
+      return _react2['default'].createElement(
+        'div',
+        { className: this.state.loaded ? 'hidden-false' : 'hidden-true' },
+        imgs
+      );
+    }
+  }, {
+    key: 'onLoadedHandler',
+    value: function onLoadedHandler() {
+      this.setState({ loaded: true });
+    }
+  }, {
+    key: 'handleTimeout',
+    value: function handleTimeout() {
+      this.props.showError();
+      alert("hit timeout. this is the onTimeout function being run and is mounting normally now");
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _this = this;
+
+      return _react2['default'].createElement(
+        _reactOnImagesLoaded2['default'],
+        {
+          onLoaded: function () {
+            return _this.onLoadedHandler();
+          },
+          onTimeout: function () {
+            return _this.handleTimeout();
+          },
+          delay: 100
+        },
+        this.state.loaded ? null : _react2['default'].createElement(_loading_spinner2['default'], null),
+        this.images()
+      );
+    }
+  }]);
+
+  return ImagesWithComponent;
+})(_react.Component);
 
 exports['default'] = ImagesWithComponent;
 module.exports = exports['default'];
 
-},{"../loading_spinner":6,"./images":2,"react":undefined,"react-on-images-loaded":undefined}],4:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _images = require('./images');
-
-var _images2 = _interopRequireDefault(_images);
-
-var _reactOnImagesLoaded = require('react-on-images-loaded');
-
-var _reactOnImagesLoaded2 = _interopRequireDefault(_reactOnImagesLoaded);
-
-var _loading_spinner = require('../loading_spinner');
-
-var _loading_spinner2 = _interopRequireDefault(_loading_spinner);
-
-var ImagesWithComponentAndFuncs = function ImagesWithComponentAndFuncs(props) {
-
-  var imgs = _images2['default'].map(function (url, idx) {
-    return _react2['default'].createElement(
-      'div',
-      { key: idx, className: 'image' },
-      _react2['default'].createElement('img', { src: url + "?" + new Date().getTime(), className: 'image' })
-    );
-  });
-
-  var handleTimeout = function handleTimeout() {
-    props.showError();
-    alert("hit timeout. this is the onTimeout function being run and is mounting normally now");
-  };
-
-  return _react2['default'].createElement(
-    _reactOnImagesLoaded2['default'],
-    {
-      classNameOnMount: 'hidden-true',
-      classNameOnLoaded: 'hidden-false',
-      placeholder: _react2['default'].createElement(_loading_spinner2['default'], null),
-      onWillMount: function () {
-        return alert('access to componentWillMount');
-      },
-      onLoaded: function () {
-        return alert('function call after images loaded');
-      },
-      onDidMount: function () {
-        return alert('access to componentDidMount');
-      },
-      onTimeout: handleTimeout
-    },
-    _react2['default'].createElement(
-      'div',
-      { className: 'image-container' },
-      imgs
-    )
-  );
-};
-
-exports['default'] = ImagesWithComponentAndFuncs;
-module.exports = exports['default'];
-
-},{"../loading_spinner":6,"./images":2,"react":undefined,"react-on-images-loaded":undefined}],5:[function(require,module,exports){
+},{"../loading_spinner":5,"./images":2,"react":undefined,"react-on-images-loaded":undefined}],4:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -355,7 +320,7 @@ var RegularImageLoading = function RegularImageLoading(_) {
 exports['default'] = RegularImageLoading;
 module.exports = exports['default'];
 
-},{"./images":2,"react":undefined}],6:[function(require,module,exports){
+},{"./images":2,"react":undefined}],5:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -371,15 +336,15 @@ var _react2 = _interopRequireDefault(_react);
 var LoadingSpinner = function LoadingSpinner(_) {
   return _react2["default"].createElement(
     "div",
-    { className: "board-loader-container" },
-    _react2["default"].createElement("div", { className: "board-loader" })
+    { className: "loading-spinner-container" },
+    _react2["default"].createElement("div", { className: "loading-spinner" })
   );
 };
 
 exports["default"] = LoadingSpinner;
 module.exports = exports["default"];
 
-},{"react":undefined}],7:[function(require,module,exports){
+},{"react":undefined}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -410,7 +375,7 @@ var ShowCss = function ShowCss(_) {
         _react2['default'].createElement(
           'code',
           null,
-          '.hidden, .hidden-true, .hidden-false {\n  animation-timing-function: cubic-bezier(0.1, 0.8, 0.1, 1);\n  transition: opacity 500ms ease-in-out;\n}\n\n.hidden-true {\n  opacity: 0;\n}\n\n.hidden-false {\n  opacity: 1;\n}'
+          '.hidden, .hidden-true, .hidden-false {\n  animation-timing-function: cubic-bezier(0.1, 0.8, 0.1, 1);\n  transition: opacity 500ms ease-in-out;\n}\n\n.hidden-true {\n  opacity: 0;\n  height: 0px;\n  overflow: hidden;\n}\n\n.hidden-false {\n  opacity: 1;\n}'
         )
       ),
       _react2['default'].createElement(
