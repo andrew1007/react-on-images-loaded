@@ -49,6 +49,7 @@ Big changes, going into v2.x.x. All you get (and all you need) is the <code>onLo
 v1.x.x was bloated. It gives too many options for such a basic concept. Every depreciated prop can be handled with <code>this.setState</code>. The following are depreciated from v1.x.x:
 
 | Depreciated props | Information|
+|---|---|
 | classNameOnMount | Initial className to use while images are still loading. default: none|
 | classNameOnLoaded | className after images are loaded. default: none |
 | onWillMount | Function to run on componentWillMount. default: null |
