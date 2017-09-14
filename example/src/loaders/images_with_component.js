@@ -31,6 +31,7 @@ export default class ImagesWithComponent extends Component {
   handleTimeout(){
     this.props.showError()
     alert("hit timeout. this is the onTimeout function being run and is mounting normally now")
+    this.setState({loaded: true})
   }
 
   render() {
