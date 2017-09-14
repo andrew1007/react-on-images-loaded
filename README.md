@@ -46,61 +46,7 @@ var OnImagesLoaded = require('react-on-images-loaded');
 | timeout | Time (ms) to wait before resolving component before all images are loaded. default: 7000 |
 
 ### Redux users, please read
-Redux won't receive your updated props from its store when the component is first mounted. It will load your default state, which will not have your images. Control mounting of OnImagesLoaded to ensure all images exist in your component's this.props before mounting. Basic example:
-
-```jsx
-import React, { Component } from 'react'
-import OnImagesLoaded from 'react-on-images-loaded'
-
-class SameReduxImplementation extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      imagesInProps: false,
-      loaded: false,
-      className: 'hidden'
-    }
-  }
-
-  async componentWillMount() {
-    await this.props.reduxDispatchToGetImages
-    this.setState({imagesInProps: true})
-  }
-
-  images() {
-    return this.props.images.map((img_url, idx) => {
-      return <img src={img_url}, key={idx}/>
-    })
-  }
-
-  runAfterImagesLoaded() {
-    this.setState({loaded: true, className: 'visible'})
-    alert('images are all loaded!')
-  }
-
-  componentElements() {
-    return (
-      <div className={this.state.className}>
-        <OnImagesLoaded
-        onLoaded={() => this.runAfterImagesLoaded()}
-        >
-          {this.images()}
-        </OnImagesLoaded>
-      </div>
-      )
-  }
-
-  render() {
-    return (
-      <div>
-        { this.state.loaded ? null : <div>Loading...</div>}
-        { this.state.imagesInProps ? this.componentElements() : null }
-      </div>
-    )
-  }
-}
-
-```
+Rdux will load your default state if your action request is too slow. Your default state does not have your images. In one way or another, ensure all <code>img</code> elements are mounted when using <code>OnImagesLoaded</code>
 
 ### Notes
 Big changes, going into v2.x.x. All you get (and all you need) is the <code>onLoaded</code> and <code>onTimeout</code> function. All depreciated props will never be removed.
