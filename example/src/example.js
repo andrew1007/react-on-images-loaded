@@ -15,8 +15,6 @@ export default class App extends Component {
 			showError: false
 		}
 		this.samples = ['regular', 'withComponent', 'css', 'showError']
-		this.toggleComponent = this.toggleComponent.bind(this)
-		this.showError = this.showError.bind(this)
 	}
 
 	toggleComponent(name) {
@@ -24,13 +22,7 @@ export default class App extends Component {
 		for (let i of this.samples) {
 			this.setState({[i]: false})
 		}
-		if (name === 'withFunc') {
-			setTimeout(() => {
-				this.setState({[name]: prevState ? false : true})
-			}, 400)
-		} else {
-			this.setState({[name]: prevState ? false : true})
-		}
+		this.setState({[name]: prevState ? false : true})
 	}
 
 	showError() {

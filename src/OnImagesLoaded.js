@@ -6,31 +6,28 @@ export default class OnImagesLoaded extends Component {
 		this.state = {
 			loaded: false,
 			loadCounter: 0,
-			imageCount: 0,
-			timedOut: true,
-			className: ''
+			imageCount: 0
 		}
 		this.onLoadEvent = this.onLoadEvent.bind(this)
 	}
 
 	componentWillMount() {
 		this.props.onWillMount ? this.props.onWillMount() : null
-		const tempTimeout = this.props.timeout || this.props.timeout == 0 ? this.props.timeout : 7000
-		this.delay = this.props.delay || this.props.delay == 0 ? this.props.delay : 500
-		this.timeout = Math.max(tempTimeout, this.delay)
+		let [tempTimeout, tempDelay] = [this.props.timeout, this.props.delay]
+		tempTimeout = (tempTimeout || tempTimeout== 0) ? tempTimeout: 7000
+		this._delay = (tempDelay || tempDelay == 0) ? tempDelay : 0
+		this._timeout = Math.max(tempTimeout, this._delay)
 	}
 
 	componentWillUnmount() {
 		this._mounted = false
-		if (this.imgs.length !== 0) {
-			this.removeImageEventListeners()
-		}
+		this._imgs.length > 0 ? this.removeImageEventListeners() : null
 	}
 
 	componentDidMount() {
 		this._mounted = true
-		this.imgs = this.imageLoad.getElementsByTagName('img')
-		if (this.imgs.length === 0) {
+		this._imgs = this.imageLoad.getElementsByTagName('img')
+		if (this._imgs.length === 0) {
 			this.props.onLoaded ? this.props.onLoaded() : this.props.onTimeout()
 		} else {
 			this.props.onDidMount ? this.props.onDidMount() : null
@@ -40,23 +37,23 @@ export default class OnImagesLoaded extends Component {
 	}
 
 	addImageEventListeners() {
-		this.setState({imageCount: this.imgs.length}, () => {
-			for (let i = 0; i < this.imgs.length; i++) {
-				this.imgs[i].addEventListener('load', this.onLoadEvent)
+		this.setState({imageCount: this._imgs.length}, () => {
+			for (let i = 0; i < this._imgs.length; i++) {
+				this._imgs[i].addEventListener('load', this.onLoadEvent)
 			}
 		})
 	}
 
 	removeImageEventListeners() {
-		for (let i = 0; i < this.imgs.length; i++) {
-				this.imgs[i].removeEventListener("load", this.onLoadEvent)
+		for (let i = 0; i < this._imgs.length; i++) {
+				this._imgs[i].removeEventListener("load", this.onLoadEvent)
 		}
 	}
 
 	setOnTimeoutEvent() {
 		setTimeout(() => {
-			(this._mounted && !this.state.loaded) ? this._runOnTimeoutFunction() : null
-		}, this.timeout)
+			this._hasTimedOut ? this._runOnTimeoutFunction() : null
+		}, this._timeout)
 	}
 
 	_runOnTimeoutFunction() {
@@ -72,13 +69,17 @@ export default class OnImagesLoaded extends Component {
 	onLoadEvent() {
 		this.setState({ loadCounter: this.state.loadCounter + 1 }, () => {
 			setTimeout(() => {
-				(this._mounted && this._imagesLoaded() && !this.state.loaded) ? this._runOnLoadFunction() : null
-			}, this.delay)
+				this._hasBeenFullyAndProperlyLoaded() ? this._runOnLoadFunction() : null
+			}, this._delay)
 		})
 	}
 
-	_imagesLoaded() {
-		return this.state.loadCounter >= this.state.imageCount
+	_hasBeenFullyAndProperlyLoaded() {
+		return this._mounted && (this.state.loadCounter >= this.state.imageCount) && !this.state.loaded
+	}
+
+	_hasTimedOut() {
+		return this._mounted && !this.state.loaded
 	}
 
 	_runOnLoadFunction() {
