@@ -46,7 +46,7 @@ var OnImagesLoaded = require('react-on-images-loaded');
 | timeout | Time (ms) to wait before resolving component before all images are loaded. default: 7000 |
 
 ### Redux users, please read
-Rdux will load your default state if your action request is too slow. Your default state does not have your images. In one way or another, ensure all <code>img</code> elements are mounted when using <code>OnImagesLoaded</code>
+Redux will load your default state if your action request is too slow. Your default state does not have your images. In one way or another, ensure all <code>img</code> elements are mounted when using <code>OnImagesLoaded</code>
 
 ### Notes
 Big changes, going into v2.x.x. All you get (and all you need) is the <code>onLoaded</code> and <code>onTimeout</code> function. All depreciated props will never be removed.
