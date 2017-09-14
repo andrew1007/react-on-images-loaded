@@ -48,16 +48,22 @@ var OnImagesLoaded = (function (_Component) {
 		key: 'componentWillUnmount',
 		value: function componentWillUnmount() {
 			this._mounted = false;
-			this.removeImageEventListeners();
+			if (this.imgs.length !== 0) {
+				this.removeImageEventListeners();
+			}
 		}
 	}, {
 		key: 'componentDidMount',
 		value: function componentDidMount() {
 			this._mounted = true;
 			this.imgs = this.imageLoad.getElementsByTagName('img');
-			this.props.onDidMount ? this.props.onDidMount() : null;
-			this.addImageEventListeners();
-			this.setOnTimeoutEvent();
+			if (this.imgs.length === 0) {
+				this.props.onLoaded ? this.props.onLoaded() : this.props.onTimeout();
+			} else {
+				this.props.onDidMount ? this.props.onDidMount() : null;
+				this.addImageEventListeners();
+				this.setOnTimeoutEvent();
+			}
 		}
 	}, {
 		key: 'addImageEventListeners',
@@ -113,7 +119,6 @@ var OnImagesLoaded = (function (_Component) {
 	}, {
 		key: '_imagesLoaded',
 		value: function _imagesLoaded() {
-			console.log(this.state);
 			return this.state.loadCounter >= this.state.imageCount;
 		}
 	}, {
