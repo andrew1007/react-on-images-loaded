@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/andrew1007/react-on-images-loaded.svg?branch=master)](https://travis-ci.org/andrew1007/react-on-images-loaded)
 
-[OnImagesLoaded](https://github.com/andrew1007/react-on-images-loaded) gives you the event listener you've always wanted: onLoad after all images are completely loaded. For html elements wrapped inside OnImagesLoaded.
+[OnImagesLoaded](https://github.com/andrew1007/react-on-images-loaded) gives you the event listener: onLoaded function call after all images are fully loaded. For HTML elements wrapped inside OnImagesLoaded.
 
 ## Demo
 
@@ -10,18 +10,13 @@ Live demo: [andrew1007.github.io/react-on-images-loaded](http://andrew1007.githu
 
 ## Installation
 
-The easiest way to use react-on-images-loaded is to install it from NPM and include it in your own React build process (using [Browserify](http://browserify.org), [Webpack](http://webpack.github.io/), etc).
-
-You can also use the standalone build by including `dist/react-on-images-loaded.js` in your page. If you use this, make sure you have already included React, and it is available as a global variable.
-
 ```
 npm install react-on-images-loaded --save
 ```
 
-
 ## Usage
 
-Use `OnImagesLoaded` as a parent container to HTML elements. A function call is triggered after all images are fully loaded.
+Use `OnImagesLoaded` as a parent container to HTML elements. The function call is triggered after all images are fully loaded.
 
 ```jsx
 var OnImagesLoaded = require('react-on-images-loaded');
@@ -32,7 +27,7 @@ var OnImagesLoaded = require('react-on-images-loaded');
   timeout={7000}
 >
   <div>
-    child html elements and components with images
+    child HTML elements and components with images
   </div>
 </OnImagesLoaded>
 ```
@@ -46,12 +41,12 @@ var OnImagesLoaded = require('react-on-images-loaded');
 | timeout | Time (ms) to wait before resolving component before all images are loaded. default: 7000 |
 
 ### Redux users, please read
-Redux will load your default state if your action request is too slow. Your default state does not have your images. In one way or another, ensure all <code>img</code> elements are mounted when using <code>OnImagesLoaded</code>
+Redux will initially load your default state. Your default state does not have your images. In one way or another, ensure all <code>img</code> elements are mounted before <code>OnImagesLoaded</code> mounts.
 
 ### Notes
-Big changes, going into v2.x.x. All you get (and all you need) is the <code>onLoaded</code> and <code>onTimeout</code> function. All depreciated props will never be removed.
+Big changes, going into v2.x.x. All you get (and all you need) is the <code>onLoaded</code> and <code>onTimeout</code> function.
 
-v1.x.x was bloated. It gives too many options for such a basic concept. Every depreciated prop can be handled with <code>this.setState</code> or is complete uneccesary . The following are depreciated from v1.x.x:
+v1.x.x was bloated. It gives too many options for such a basic concept. Every depreciated prop can be handled with <code>this.setState</code> or is completely unnecessary. All depreciated props will never be removed. The following are depreciated from v1.x.x:
 
 | Depreciated props | Information|
 |---|---|
