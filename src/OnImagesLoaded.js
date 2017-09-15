@@ -37,41 +37,52 @@ export default class OnImagesLoaded extends Component {
 	}
 
 	addImageEventListeners() {
-		this.setState({imageCount: this._imgs.length}, () => {
-			for (let i = 0; i < this._imgs.length; i++) {
+		let totalValidImages = 0
+		for (let i = 0; i < this._imgs.length; i++) {
+			if (this._imgs[i].src) {
 				this._imgs[i].addEventListener('load', this.onLoadEvent)
+				totalValidImages += 1
 			}
-		})
+		}
+		if (this._mounted) {
+			this.setState({imageCount: totalValidImages})
+		}
 	}
 
 	removeImageEventListeners() {
 		for (let i = 0; i < this._imgs.length; i++) {
+			if (this._imgs[i].src) {
 				this._imgs[i].removeEventListener("load", this.onLoadEvent)
+			}
 		}
 	}
 
 	setOnTimeoutEvent() {
 		setTimeout(() => {
-			this._hasTimedOut ? this._runOnTimeoutFunction() : null
+			this._hasTimedOut() ? this._runOnTimeoutFunction() : null
 		}, this._timeout)
 	}
 
 	_runOnTimeoutFunction() {
-		this.setState({loaded: true}, () => {
-			if (this.props.onTimeout) {
-				this.props.onTimeout()
-			} else {
-				this.props.onLoaded ? this.props.onLoaded() : null
-			}
-		})
+		if (this._mounted) {
+			this.setState({loaded: true}, () => {
+				if (this.props.onTimeout) {
+					this.props.onTimeout()
+				} else {
+					this.props.onLoaded ? this.props.onLoaded() : null
+				}
+			})
+		}
 	}
 
 	onLoadEvent() {
-		this.setState({ loadCounter: this.state.loadCounter + 1 }, () => {
-			setTimeout(() => {
-				this._hasBeenFullyAndProperlyLoaded() ? this._runOnLoadFunction() : null
-			}, this._delay)
-		})
+		if (this._mounted) {
+			this.setState({ loadCounter: this.state.loadCounter + 1 }, () => {
+				setTimeout(() => {
+					this._hasBeenFullyAndProperlyLoaded() ? this._runOnLoadFunction() : null
+				}, this._delay)
+			})
+		}
 	}
 
 	_hasBeenFullyAndProperlyLoaded() {
@@ -83,9 +94,11 @@ export default class OnImagesLoaded extends Component {
 	}
 
 	_runOnLoadFunction() {
-		this.setState({loaded: true, timedOut: false}, () => {
-			this.props.onLoaded ? this.props.onLoaded() : null
-		})
+		if (this._mounted) {
+			this.setState({loaded: true, timedOut: false}, () => {
+				this.props.onLoaded ? this.props.onLoaded() : null
+			})
+		}
 	}
 
 	render() {

@@ -32,13 +32,14 @@ export default class App extends Component {
 	error() {
 		return (
 			<p className='error'>
-				{`Oh no! OnImagesLoaded hit its default timeout cap (7000ms)`}
-				{`and is mounting normally now. Is your internet connection slow?`}
+				{`Oh no! OnImagesLoaded hit its default timeout cap (7000ms) `}
+				{`and is rendering normally now. Is your internet connection slow?`}
 			</p>
 		)
 	}
 
 	render () {
+		const imagesWithComponentProps = {showError: () => this.showError()}
 		return (
 			<div className='container'>
 				<div className='subcontainer'>
@@ -57,7 +58,7 @@ export default class App extends Component {
 						{this.state.showError ? this.error() : null}
 					</div>
 					{ this.state.regular ? <RegularImageLoading/> : null}
-					{ this.state.withComponent ? <ImagesWithComponent showError={this.showError}/> : null}
+					{ this.state.withComponent ? <ImagesWithComponent {...imagesWithComponentProps}/> : null}
 					{ this.state.css ? <ShowCss/> : null}
 				</div>
 			</div>
