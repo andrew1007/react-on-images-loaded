@@ -30,115 +30,143 @@ var OnImagesLoaded = (function (_Component) {
 		this.state = {
 			loaded: false,
 			loadCounter: 0,
-			imageCount: 0,
-			timedOut: true,
-			className: ''
+			imageCount: 0
 		};
-		this.onLoadEvent = this.onLoadEvent.bind(this);
+		this._onLoadEvent = this._onLoadEvent.bind(this);
 	}
 
 	_createClass(OnImagesLoaded, [{
 		key: 'componentWillMount',
 		value: function componentWillMount() {
-			this.props.onWillMount ? this.props.onWillMount() : null;
-			var tempTimeout = this.props.timeout || this.props.timeout == 0 ? this.props.timeout : 7000;
-			this.delay = this.props.delay || this.props.delay == 0 ? this.props.delay : 500;
-			this.timeout = Math.max(tempTimeout, this.delay);
+			this._isInProps('onWillMount') ? this.props.onWillMount() : null;
+			var tempTimeout = this.props.timeout;
+			var tempDelay = this.props.delay;
+
+			tempTimeout = tempTimeout || tempTimeout == 0 ? tempTimeout : 7000;
+			this._delay = tempDelay || tempDelay == 0 ? tempDelay : 0;
+			this._timeout = Math.max(tempTimeout, this._delay);
 		}
 	}, {
 		key: 'componentWillUnmount',
 		value: function componentWillUnmount() {
-			this._mounted = false;
-			if (this.imgs.length !== 0) {
-				this.removeImageEventListeners();
-			}
+			this.mounted = false;
+			this._imgs.length > 0 ? this._removeImageEventListeners() : null;
 		}
 	}, {
 		key: 'componentDidMount',
 		value: function componentDidMount() {
-			this._mounted = true;
-			this.imgs = this.imageLoad.getElementsByTagName('img');
-			if (this.imgs.length === 0) {
-				this.props.onLoaded ? this.props.onLoaded() : this.props.onTimeout();
+			this.mounted = true;
+			this._imgs = this.imageLoad.getElementsByTagName('img');
+			if (this._imgs.length === 0) {
+				if (this._isInProps('onLoaded')) {
+					this.props.onLoaded();
+				} else if (this._isInProps('onTimeout')) {
+					this.props.onTimeout();
+				}
 			} else {
-				this.props.onDidMount ? this.props.onDidMount() : null;
-				this.addImageEventListeners();
-				this.setOnTimeoutEvent();
+				this._isInProps('onDidMount') ? this.props.onDidMount() : null;
+				this._addImageEventListeners();
+				this._setOnTimeoutEvent();
 			}
 		}
 	}, {
-		key: 'addImageEventListeners',
-		value: function addImageEventListeners() {
+		key: '_addImageEventListeners',
+		value: function _addImageEventListeners() {
 			var _this = this;
 
-			this.setState({ imageCount: this.imgs.length }, function () {
-				for (var i = 0; i < _this.imgs.length; i++) {
-					_this.imgs[i].addEventListener('load', _this.onLoadEvent);
+			this.setState({ imageCount: this._imgs.length }, function () {
+				for (var i = 0; i < _this._imgs.length; i++) {
+					_this._imgs[i].addEventListener('load', _this._onLoadEvent);
 				}
 			});
 		}
 	}, {
-		key: 'removeImageEventListeners',
-		value: function removeImageEventListeners() {
-			for (var i = 0; i < this.imgs.length; i++) {
-				this.imgs[i].removeEventListener("load", this.onLoadEvent);
+		key: '_removeImageEventListeners',
+		value: function _removeImageEventListeners() {
+			for (var i = 0; i < this._imgs.length; i++) {
+				this._imgs[i].removeEventListener("load", this._onLoadEvent);
 			}
 		}
 	}, {
-		key: 'setOnTimeoutEvent',
-		value: function setOnTimeoutEvent() {
+		key: '_setOnTimeoutEvent',
+		value: function _setOnTimeoutEvent() {
 			var _this2 = this;
 
 			setTimeout(function () {
-				_this2._mounted && !_this2.state.loaded ? _this2._runOnTimeoutFunction() : null;
-			}, this.timeout);
+				_this2._hasTimedOut() ? _this2._runOnTimeoutFunction() : null;
+			}, this._timeout);
+		}
+	}, {
+		key: '_isInProps',
+		value: function _isInProps(prop) {
+			return prop in this.props;
 		}
 	}, {
 		key: '_runOnTimeoutFunction',
 		value: function _runOnTimeoutFunction() {
 			var _this3 = this;
 
-			this.setState({ loaded: true }, function () {
-				if (_this3.props.onTimeout) {
-					_this3.props.onTimeout();
-				} else {
-					_this3.props.onLoaded ? _this3.props.onLoaded() : null;
-				}
-			});
+			if (this.mounted) {
+				this.setState({ loaded: true }, function () {
+					if (_this3._isInProps('onTimeout')) {
+						_this3.props.onTimeout();
+					} else if (_this3._isInProps('onLoaded')) {
+						_this3.props.onLoaded();
+					}
+				});
+			}
 		}
 	}, {
-		key: 'onLoadEvent',
-		value: function onLoadEvent() {
+		key: '_onLoadEvent',
+		value: function _onLoadEvent() {
 			var _this4 = this;
 
-			this.setState({ loadCounter: this.state.loadCounter + 1 }, function () {
-				setTimeout(function () {
-					_this4._mounted && _this4._imagesLoaded() && !_this4.state.loaded ? _this4._runOnLoadFunction() : null;
-				}, _this4.delay);
-			});
+			if (this.mounted) {
+				this.setState({ loadCounter: this.state.loadCounter + 1 }, function () {
+					setTimeout(function () {
+						_this4._hasBeenFullyAndProperlyLoaded() ? _this4._runOnLoadFunction() : null;
+					}, _this4._delay);
+				});
+			}
 		}
 	}, {
-		key: '_imagesLoaded',
-		value: function _imagesLoaded() {
-			return this.state.loadCounter >= this.state.imageCount;
+		key: '_hasBeenFullyAndProperlyLoaded',
+		value: function _hasBeenFullyAndProperlyLoaded() {
+			return this.mounted && this.state.loadCounter >= this.state.imageCount && !this.state.loaded;
+		}
+	}, {
+		key: '_hasTimedOut',
+		value: function _hasTimedOut() {
+			return this.mounted && !this.state.loaded;
 		}
 	}, {
 		key: '_runOnLoadFunction',
 		value: function _runOnLoadFunction() {
 			var _this5 = this;
 
-			this.setState({ loaded: true, timedOut: false }, function () {
-				_this5.props.onLoaded ? _this5.props.onLoaded() : null;
-			});
+			if (this.mounted) {
+				this.setState({ loaded: true, timedOut: false }, function () {
+					_this5._isInProps('onLoaded') ? _this5.props.onLoaded() : null;
+				});
+			}
+		}
+	}, {
+		key: '_depreciatedClassNameHandler',
+		value: function _depreciatedClassNameHandler() {
+			if (this.state.loaded) {
+				return this.props.classNameOnLoaded;
+			} else {
+				return this.props.classNameOnMount;
+			}
 		}
 	}, {
 		key: 'render',
 		value: function render() {
 			var _this6 = this;
 
-			var className = undefined;
-			if (this.props.classNameOnLoaded || this.props.classNameOnMount) {
-				className = this.state.loaded ? this.props.classNameOnLoaded : this.props.classNameOnMount;
+			var hasDefinedClassName = this._isInProps('classNameOnLoaded') || this._isInProps('classNameOnMount');
+			if (this.imageLoad && hasDefinedClassName) {
+				this.imageLoad.className = this._depreciatedClassNameHandler();
 			}
 			return _react2['default'].createElement(
 				'div',
@@ -148,7 +176,7 @@ var OnImagesLoaded = (function (_Component) {
 					'div',
 					{ ref: function (ctx) {
 							_this6.imageLoad = ctx;
-						}, className: className ? className : null },
+						} },
 					this.props.children
 				)
 			);
