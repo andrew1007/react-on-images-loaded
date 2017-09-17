@@ -4,6 +4,7 @@ import OnImagesLoaded from 'react-on-images-loaded'
 import RegularImageLoading from './loaders/regular_image_loading'
 import ImagesWithComponent from './loaders/images_with_component'
 import LoadingSpinner from './loading_spinner'
+import DepreciatedTest from './loaders/depreciated_test'
 import ShowCss from './show_css'
 
 export default class App extends Component {
@@ -40,6 +41,7 @@ export default class App extends Component {
 
 	render () {
 		const imagesWithComponentProps = {showError: () => this.showError()}
+		// { this.state.withComponent ? <DepreciatedTest/> : null}
 		return (
 			<div className='container'>
 				<div className='subcontainer'>

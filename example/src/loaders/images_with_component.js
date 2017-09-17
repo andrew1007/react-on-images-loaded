@@ -14,7 +14,7 @@ export default class ImagesWithComponent extends Component {
   images() {
     const imgs = images.map((url, idx) => (
       <div key={idx} className='image'>
-        <img src={url + "?" + (new Date()).getTime()} className='image'/>
+        <img src={url + "?" + new Date().getTime()} className='image'/>
       </div>
     ))
     return (
@@ -39,7 +39,7 @@ export default class ImagesWithComponent extends Component {
       <OnImagesLoaded
         onLoaded={() => this.onLoadedHandler()}
         onTimeout={() => this.handleTimeout()}
-        delay={100}
+        timeout={70000}
         >
         {this.state.loaded ? null : <LoadingSpinner/>}
         {this.images()}
