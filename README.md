@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/andrew1007/react-on-images-loaded.svg?branch=master)](https://travis-ci.org/andrew1007/react-on-images-loaded)
 
-[OnImagesLoaded](https://github.com/andrew1007/react-on-images-loaded) gives you the event listener: onLoaded function call after all images are fully loaded. For HTML elements wrapped inside OnImagesLoaded.
+[OnImagesLoaded](https://github.com/andrew1007/react-on-images-loaded) Control an action after every image is fully loaded, for HTML elements wrapped inside <code>OnImagesLoaded</code>.
 
 ## Demo
 
@@ -26,9 +26,7 @@ var OnImagesLoaded = require('react-on-images-loaded');
   onTimeout={this.runTimeoutFunction.bind(this)}
   timeout={7000}
 >
-  <div>
-    child HTML elements and components with images
-  </div>
+  {'child HTML elements and components with images'}
 </OnImagesLoaded>
 ```
 
