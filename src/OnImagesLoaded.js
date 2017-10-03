@@ -27,6 +27,7 @@ export default class OnImagesLoaded extends Component {
 	componentDidMount() {
 		this.mounted = true
 		this._imgs = this.imageLoad.getElementsByTagName('img')
+		console.log('componentdidmount');
 		if (this._imgs.length === 0) {
 			if (this._isInProps('onLoaded')) {
 				this.props.onLoaded()
@@ -37,6 +38,9 @@ export default class OnImagesLoaded extends Component {
 			this._isInProps('onDidMount') ? this.props.onDidMount() : null
 			this._addImageEventListeners()
 			this._setOnTimeoutEvent()
+			if (this.props.watch) {
+				this.watchImageChanges()
+			}
 		}
 	}
 
@@ -52,6 +56,26 @@ export default class OnImagesLoaded extends Component {
 		for (let i = 0; i < this._imgs.length; i++) {
 			this._imgs[i].removeEventListener("load", this._onLoadEvent)
 		}
+	}
+
+	watchImageChanges() {
+		setInterval(() => {
+			console.log('watching');
+			const prevImages = this._imgs
+			const currentImages = this.imageLoad.getElementsByTagName('img')
+			console.log(currentImages.length)
+			console.log(prevImages.length);
+			if (currentImages.length !== prevImages.length) {
+				console.log('TRUUUEEE');
+				this.setState({loaded: false,
+					loadCounter: 0,
+					imageCount: currentImages.length
+				})
+				this._images = currentImages
+				this._addImageEventListeners()
+				this._setOnTimeoutEvent()
+			}
+		}, 1000)
 	}
 
 	_setOnTimeoutEvent() {

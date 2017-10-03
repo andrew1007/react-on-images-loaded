@@ -1,8 +1,8 @@
 import React from 'react'
-import images from './images'
+import {imageSet1} from './images'
 
 const RegularImageLoading = _ => {
-  const imgs = images.map((url, idx) => (
+  const imgs = imageSet1.map((url, idx) => (
     <div key={idx} className='image'>
       <img src={url + "?" + (new Date()).getTime()} className='image'/>
     </div>
