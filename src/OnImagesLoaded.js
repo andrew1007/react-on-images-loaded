@@ -27,6 +27,7 @@ export default class OnImagesLoaded extends Component {
 	componentDidMount() {
 		this.mounted = true
 		this._imgs = this.imageLoad.getElementsByTagName('img')
+		console.log('componentdidmount');
 		if (this._imgs.length === 0) {
 			if (this._isInProps('onLoaded')) {
 				this.props.onLoaded()
@@ -103,15 +104,19 @@ export default class OnImagesLoaded extends Component {
 	}
 
 	_depreciatedClassNameHandler() {
-		if (this.state.loaded) {
-			return this.props.classNameOnLoaded
+		const { className, classNameOnLoaded, classNameOnMount } = this.props
+		const classNames = { className, classNameOnLoaded, classNameOnMount	}
+		if (className) {
+			return className
+		} else if (!this.state.loaded){
+			return classNameOnMount
 		} else {
-			return this.props.classNameOnMount
+			return classNameOnLoaded
 		}
 	}
 
 	render() {
-		const hasDefinedClassName = this._isInProps('classNameOnLoaded') || this._isInProps('classNameOnMount')
+		const hasDefinedClassName = this._isInProps('classNameOnLoaded') || this._isInProps('classNameOnMount') || this._isInProps('className')
 		if (this.imageLoad && hasDefinedClassName) {
 			this.imageLoad.className = this._depreciatedClassNameHandler()
 		}
