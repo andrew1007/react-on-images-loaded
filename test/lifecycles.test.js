@@ -44,13 +44,32 @@ describe('componentDidMount', () => {
   component.props.onTimeout = jest.fn()
   component._addImageEventListeners = jest.fn()
   component._setOnTimeoutEvent = jest.fn()
-  component.imageLoad.getElementsByTagName = jest.fn(() => [])
   component._isInProps = jest.fn()
+  component.imageLoad.getElementsByTagName = jest.fn(() => [])
+
+  it('sets mounted to true', () => {
+    component.componentDidMount()
+    expect(component.mounted).toEqual(true)
+  })
+
+  describe('when images exist', () => {
+    it('calls _addImageEventListeners', () => {
+      component.imageLoad.getElementsByTagName = jest.fn(() => ['test.jpg'])
+      component.componentDidMount()
+      expect(component._addImageEventListeners).toBeCalled()
+    })
+    it('calls _setOnTimeoutEvent', () => {
+      component.imageLoad.getElementsByTagName = jest.fn(() => ['test.jpg'])
+      component.componentDidMount()
+      expect(component._setOnTimeoutEvent).toBeCalled()
+    })
+  })
 
   describe('when no images are in component', () => {
     it('does not add event listeners if _imgs is empty', () => {
       component.imageLoad.getElementsByTagName = jest.fn(() => [])
       component.componentDidMount()
+      console.log(component.imageLoad.getElementsByTagName());
       expect(component._addImageEventListeners).not.toBeCalled()
     })
     it('does not set timeout event if _imgs is empty', () => {
@@ -58,9 +77,5 @@ describe('componentDidMount', () => {
       component.componentDidMount()
       expect(component._setOnTimeoutEvent).not.toBeCalled()
     })
-  })
-  it('sets mounted to true', () => {
-    component.componentDidMount()
-    expect(component.mounted).toEqual(true)
   })
 })
