@@ -25,19 +25,18 @@ export default class OnImagesLoaded extends Component {
 	}
 
 	componentDidMount() {
-		console.log('asdfasdf');
 		this.mounted = true
 		this._imgs = this.imageLoad.getElementsByTagName('img')
 		if (this._imgs.length === 0) {
-			// if (this._isInProps('onLoaded')) {
-			// 	this.props.onLoaded()
-			// } else if (this._isInProps('onTimeout')){
-			// 	this.props.onTimeout()
-			// }
+			if (this._isInProps('onLoaded')) {
+				this.props.onLoaded()
+			} else if (this._isInProps('onTimeout')){
+				this.props.onTimeout()
+			}
 		} else {
-			// this._isInProps('onDidMount') ? this.props.onDidMount() : null
-			// this._addImageEventListeners()
-			// this._setOnTimeoutEvent()
+			this._isInProps('onDidMount') ? this.props.onDidMount() : null
+			this._addImageEventListeners()
+			this._setOnTimeoutEvent()
 		}
 	}
 
