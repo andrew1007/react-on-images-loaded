@@ -27,7 +27,6 @@ export default class OnImagesLoaded extends Component {
 	componentDidMount() {
 		this.mounted = true
 		this._imgs = this.imageLoad.getElementsByTagName('img')
-		console.log('componentdidmount');
 		if (this._imgs.length === 0) {
 			if (this._isInProps('onLoaded')) {
 				this.props.onLoaded()

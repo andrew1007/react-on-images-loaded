@@ -37,5 +37,18 @@ describe('_depreciatedClassNameHandler', () => {
 })
 
 describe('_hasTimedOut', () => {
-  
+  it('is false if not mounted', () => {
+    const component = new OnImagesLoaded()
+    component.mounted = false
+    const timeoutStatus = component._hasTimedOut()
+    expect(timeoutStatus).toEqual(false)
+  })
+
+  it('is false if loaded', () => {
+    const component = new OnImagesLoaded()
+    component.mounted = true
+    component.state.loaded = true
+    const timeoutStatus = component._hasTimedOut()
+    expect(timeoutStatus).toEqual(false)
+  })
 })
