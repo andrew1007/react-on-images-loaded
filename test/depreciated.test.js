@@ -28,10 +28,10 @@ describe('_depreciatedClassNameHandler', () => {
 })
 
 describe('componentWillMount', () => {
+  const component = new OnImagesLoaded
+  component.props = {}
   it('[DEPRECIATED] runs this.props.onWillMount if defined', () => {
     const onWillMount = jest.fn()
-    const component = new OnImagesLoaded
-    component.props = {}
     component.props.onWillMount = onWillMount
     component.componentWillMount()
     expect(onWillMount).toBeCalled()
