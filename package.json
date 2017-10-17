@@ -42,7 +42,7 @@
     "publish:site": "NODE_ENV=production gulp publish:examples",
     "release": "NODE_ENV=production gulp release",
     "start": "gulp dev",
-    "test": "jest",
+    "test": "echo 'no tests yet'",
     "watch": "gulp watch:lib"
   },
   "keywords": [
