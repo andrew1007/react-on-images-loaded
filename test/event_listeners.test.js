@@ -11,8 +11,6 @@ component._onLoadEvent = jest.fn()
 describe('_addImageEventListeners', () => {
   describe('has images', () => {
     const component = new OnImagesLoaded()
-    jest.useFakeTimers()
-    jest.runAllTimers()
     component.setState = jest.fn((el, cb) => cb())
     String.prototype.addEventListener = jest.fn()
     component._delay = 0
@@ -47,6 +45,10 @@ describe('_removeImageEventListeners', () => {
   String.prototype.removeEventListener = jest.fn()
   component._onLoadEvent = jest.fn()
   component._imgs = ['test1', 'test2']
+  it('removes it for all images', () => {
+    component._removeImageEventListeners()
+    expect(String.prototype.removeEventListener).toHaveBeenCalledTimes(2)
+  })
   it('has removeEventListener called with correct function', () => {
     component._removeImageEventListeners()
     expect(String.prototype.removeEventListener).toBeCalledWith('load', component._onLoadEvent)
