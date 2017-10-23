@@ -4,16 +4,20 @@ describe('tests', () => {
     return this.innerArray()
   }
   describe('empty', () => {
-    it('testArray is empty', () => {
+    beforeEach(() => {
       sampleArray.innerArray = jest.fn(() => [])
+    })
+    it('testArray is empty', () => {
       console.log(sampleArray.innerArray()) //['test']
       expect(sampleArray.test().length).toEqual(0)
     })
   })
 
   describe('not empty', () => {
-    it('testArray is not empty', () => {
+    beforeEach(() => {
       sampleArray.innerArray = jest.fn(() => ['test'])
+    })
+    it('testArray is not empty', () => {
       expect(sampleArray.test().length).toEqual(1)
     })
   })

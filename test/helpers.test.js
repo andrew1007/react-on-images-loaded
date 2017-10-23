@@ -10,10 +10,11 @@ const classNameOnMount = 'classNameOnMount'
 const emptyArray = []
 const images = ['test.jpg', 'test1.jpg']
 
+const props = { className }
+const component = new OnImagesLoaded(props)
+
 describe('_isInProps', () => {
   it('tests for props', () => {
-    const props = { className }
-    const component = new OnImagesLoaded(props)
     const inProps = component._isInProps('className')
     expect(inProps).toEqual(true)
   })
