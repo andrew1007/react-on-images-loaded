@@ -1,4 +1,7 @@
 import React, {Component} from 'react'
+// travis demands that test be
+// "test": "echo 'no tests yet'",
+// instead of test: jest
 
 export default class OnImagesLoaded extends Component {
 	constructor(props) {
