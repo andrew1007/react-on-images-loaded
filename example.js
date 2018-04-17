@@ -41,6 +41,10 @@ var _loading_spinner = require('./loading_spinner');
 
 var _loading_spinner2 = _interopRequireDefault(_loading_spinner);
 
+var _loadersDepreciated_test = require('./loaders/depreciated_test');
+
+var _loadersDepreciated_test2 = _interopRequireDefault(_loadersDepreciated_test);
+
 var _show_css = require('./show_css');
 
 var _show_css2 = _interopRequireDefault(_show_css);
@@ -58,15 +62,11 @@ var App = (function (_Component) {
 			showError: false
 		};
 		this.samples = ['regular', 'withComponent', 'css', 'showError'];
-		this.toggleComponent = this.toggleComponent.bind(this);
-		this.showError = this.showError.bind(this);
 	}
 
 	_createClass(App, [{
 		key: 'toggleComponent',
 		value: function toggleComponent(name) {
-			var _this = this;
-
 			var prevState = this.state[name];
 			var _iteratorNormalCompletion = true;
 			var _didIteratorError = false;
@@ -93,13 +93,7 @@ var App = (function (_Component) {
 				}
 			}
 
-			if (name === 'withFunc') {
-				setTimeout(function () {
-					_this.setState(_defineProperty({}, name, prevState ? false : true));
-				}, 400);
-			} else {
-				this.setState(_defineProperty({}, name, prevState ? false : true));
-			}
+			this.setState(_defineProperty({}, name, prevState ? false : true));
 		}
 	}, {
 		key: 'showError',
@@ -112,15 +106,18 @@ var App = (function (_Component) {
 			return _react2['default'].createElement(
 				'p',
 				{ className: 'error' },
-				'Oh no! OnImagesLoaded hit its default timeout cap (7000ms)',
-				'and is mounting normally now. Is your internet connection slow?'
+				'Oh no! OnImagesLoaded hit its default timeout cap (7000ms) ',
+				'and is rendering normally now. Is your internet connection slow?'
 			);
 		}
 	}, {
 		key: 'render',
 		value: function render() {
-			var _this2 = this;
+			var _this = this;
 
+			var imagesWithComponentProps = { showError: function showError() {
+					return _this.showError();
+				} };
 			return _react2['default'].createElement(
 				'div',
 				{ className: 'container' },
@@ -133,21 +130,21 @@ var App = (function (_Component) {
 						_react2['default'].createElement(
 							'button',
 							{ onClick: function () {
-									return _this2.toggleComponent('regular');
+									return _this.toggleComponent('regular');
 								} },
 							'normal rendering'
 						),
 						_react2['default'].createElement(
 							'button',
 							{ onClick: function () {
-									return _this2.toggleComponent('withComponent');
+									return _this.toggleComponent('withComponent');
 								} },
 							'using OnImagesLoaded'
 						),
 						_react2['default'].createElement(
 							'button',
 							{ onClick: function () {
-									return _this2.toggleComponent('css');
+									return _this.toggleComponent('css');
 								} },
 							'show css'
 						)
@@ -158,7 +155,7 @@ var App = (function (_Component) {
 						this.state.showError ? this.error() : null
 					),
 					this.state.regular ? _react2['default'].createElement(_loadersRegular_image_loading2['default'], null) : null,
-					this.state.withComponent ? _react2['default'].createElement(_loadersImages_with_component2['default'], { showError: this.showError }) : null,
+					this.state.withComponent ? _react2['default'].createElement(_loadersImages_with_component2['default'], imagesWithComponentProps) : null,
 					this.state.css ? _react2['default'].createElement(_show_css2['default'], null) : null
 				)
 			);
@@ -173,7 +170,61 @@ exports['default'] = App;
 _reactDom2['default'].render(_react2['default'].createElement(App, null), document.getElementById('app'));
 module.exports = exports['default'];
 
-},{"./loaders/images_with_component":3,"./loaders/regular_image_loading":4,"./loading_spinner":5,"./show_css":6,"react":undefined,"react-dom":undefined,"react-on-images-loaded":undefined}],2:[function(require,module,exports){
+},{"./loaders/depreciated_test":2,"./loaders/images_with_component":4,"./loaders/regular_image_loading":5,"./loading_spinner":6,"./show_css":7,"react":undefined,"react-dom":undefined,"react-on-images-loaded":undefined}],2:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _images = require('./images');
+
+var _images2 = _interopRequireDefault(_images);
+
+var _reactOnImagesLoaded = require('react-on-images-loaded');
+
+var _reactOnImagesLoaded2 = _interopRequireDefault(_reactOnImagesLoaded);
+
+var _loading_spinner = require('../loading_spinner');
+
+var _loading_spinner2 = _interopRequireDefault(_loading_spinner);
+
+var DepreciatedTest = function DepreciatedTest(props) {
+  var imgs = _images2['default'].map(function (url, idx) {
+    return _react2['default'].createElement(
+      'div',
+      { key: idx, className: 'image' },
+      _react2['default'].createElement('img', { src: url + "?" + new Date().getTime(), className: 'image' })
+    );
+  });
+
+  return _react2['default'].createElement(
+    _reactOnImagesLoaded2['default'],
+    {
+      classNameOnMount: 'hidden-true',
+      classNameOnLoaded: 'hidden-false',
+      placeholder: _react2['default'].createElement(_loading_spinner2['default'], null),
+      delay: 500,
+      onTimeout: props.showError
+    },
+    _react2['default'].createElement(
+      'div',
+      { className: 'image-container' },
+      imgs
+    )
+  );
+};
+
+exports['default'] = DepreciatedTest;
+module.exports = exports['default'];
+
+},{"../loading_spinner":6,"./images":3,"react":undefined,"react-on-images-loaded":undefined}],3:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -184,7 +235,7 @@ var images = ["https://res.cloudinary.com/andoo/image/upload/v1486826817/image_o
 exports["default"] = images;
 module.exports = exports["default"];
 
-},{}],3:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -271,7 +322,7 @@ var ImagesWithComponent = (function (_Component) {
           onTimeout: function () {
             return _this.handleTimeout();
           },
-          delay: 100
+          timeout: 70000
         },
         this.state.loaded ? null : _react2['default'].createElement(_loading_spinner2['default'], null),
         this.images()
@@ -285,7 +336,7 @@ var ImagesWithComponent = (function (_Component) {
 exports['default'] = ImagesWithComponent;
 module.exports = exports['default'];
 
-},{"../loading_spinner":5,"./images":2,"react":undefined,"react-on-images-loaded":undefined}],4:[function(require,module,exports){
+},{"../loading_spinner":6,"./images":3,"react":undefined,"react-on-images-loaded":undefined}],5:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -321,7 +372,7 @@ var RegularImageLoading = function RegularImageLoading(_) {
 exports['default'] = RegularImageLoading;
 module.exports = exports['default'];
 
-},{"./images":2,"react":undefined}],5:[function(require,module,exports){
+},{"./images":3,"react":undefined}],6:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -345,7 +396,7 @@ var LoadingSpinner = function LoadingSpinner(_) {
 exports["default"] = LoadingSpinner;
 module.exports = exports["default"];
 
-},{"react":undefined}],6:[function(require,module,exports){
+},{"react":undefined}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
