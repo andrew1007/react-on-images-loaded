@@ -1,3 +1,5 @@
+window.location = {search: []}
+// console.log(window.location.search + '10');
 describe('tests', () => {
   let sampleArray = new Array()
   Array.prototype.test = function() {
@@ -8,7 +10,7 @@ describe('tests', () => {
       sampleArray.innerArray = jest.fn(() => [])
     })
     it('testArray is empty', () => {
-      console.log(sampleArray.innerArray()) //['test']
+      // console.log(sampleArray.innerArray()) //['test']
       expect(sampleArray.test().length).toEqual(0)
     })
   })

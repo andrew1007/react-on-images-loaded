@@ -41,7 +41,6 @@ export default class App extends Component {
 
 	render () {
 		const imagesWithComponentProps = {showError: () => this.showError()}
-		// { this.state.withComponent ? <DepreciatedTest/> : null}
 		return (
 			<div className='container'>
 				<div className='subcontainer'>

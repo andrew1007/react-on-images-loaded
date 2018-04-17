@@ -36,8 +36,8 @@ var OnImagesLoaded = (function (_Component) {
 	}
 
 	_createClass(OnImagesLoaded, [{
-		key: 'componentWillMount',
-		value: function componentWillMount() {
+		key: 'timingSetup',
+		value: function timingSetup() {
 			this._isInProps('onWillMount') ? this.props.onWillMount() : null;
 			var tempTimeout = this.props.timeout;
 			var tempDelay = this.props.delay;
@@ -55,6 +55,7 @@ var OnImagesLoaded = (function (_Component) {
 	}, {
 		key: 'componentDidMount',
 		value: function componentDidMount() {
+			this.timingSetup();
 			this.mounted = true;
 			this._imgs = this.imageLoad.getElementsByTagName('img');
 			if (this._imgs.length === 0) {
@@ -153,10 +154,18 @@ var OnImagesLoaded = (function (_Component) {
 	}, {
 		key: '_depreciatedClassNameHandler',
 		value: function _depreciatedClassNameHandler() {
-			if (this.state.loaded) {
-				return this.props.classNameOnLoaded;
+			var _props = this.props;
+			var className = _props.className;
+			var classNameOnLoaded = _props.classNameOnLoaded;
+			var classNameOnMount = _props.classNameOnMount;
+
+			var classNames = { className: className, classNameOnLoaded: classNameOnLoaded, classNameOnMount: classNameOnMount };
+			if (className) {
+				return className;
+			} else if (!this.state.loaded) {
+				return classNameOnMount;
 			} else {
-				return this.props.classNameOnMount;
+				return classNameOnLoaded;
 			}
 		}
 	}, {
@@ -164,7 +173,7 @@ var OnImagesLoaded = (function (_Component) {
 		value: function render() {
 			var _this6 = this;
 
-			var hasDefinedClassName = this._isInProps('classNameOnLoaded') || this._isInProps('classNameOnMount');
+			var hasDefinedClassName = this._isInProps('classNameOnLoaded') || this._isInProps('classNameOnMount') || this._isInProps('className');
 			if (this.imageLoad && hasDefinedClassName) {
 				this.imageLoad.className = this._depreciatedClassNameHandler();
 			}

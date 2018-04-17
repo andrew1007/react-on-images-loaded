@@ -30,13 +30,41 @@ var OnImagesLoaded = require('react-on-images-loaded');
 </OnImagesLoaded>
 ```
 
-### Properties
+### Controlling images in a ternary (important!)
+OnImagesLoaded uses `getElementsByTagName`. It can't find images that are not loaded in the DOM. Controlling it with a ternary will not work for components that are completely unmounted! Use inline styles or `className` to toggle visual hiding instead.
 
+```jsx
+var OnImagesLoaded = require('react-on-images-loaded');
+
+render() {
+  let hiddenStyle = {height: 0, overflow: hidden};
+  let visibleStyle = {};
+    return (
+      <div>
+        <div style={this.state.showImages ? hiddenStyle : visibleStyle}>
+          <OnImagesLoaded
+          onLoaded={() => this.setState({showImages: true})}
+          onTimeout={() => this.setState({showImages: true})}
+          timeout={7000}
+          >
+          {'child HTML elements and components with images'}
+          </OnImagesLoaded>
+        </div>
+        <div style={this.state.showImages ? visibleStyle : hiddenStyle}>
+          Loading...
+        </div>
+      </div>
+    )
+  }
+```
+
+### Properties
 | Props | Information|
 |---|---|
 | onLoaded | Function to run after images are loaded. |
 | onTimeout | Function if timeout is reached. default: onLoaded function. |
 | timeout | Time (ms) to wait before resolving component before all images are loaded. default: 7000 |
+
 
 ### Redux users, please read
 Redux will initially load your default state if you let your component asynchronously load. Your default state does not have your images. In one way or another, ensure all <code>img</code> elements are in your store and ready to be rendered before <code>OnImagesLoaded</code> mounts.

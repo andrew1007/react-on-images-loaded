@@ -18,38 +18,42 @@ component.props.onDidMount = jest.fn()
 component.props.onTimeout = jest.fn()
 component._addImageEventListeners = jest.fn()
 component._setOnTimeoutEvent = jest.fn()
-component._isInProps = jest.fn()
+component._isInProps = jest.fn((prop) => prop !== 'onWillMount')
 component._removeImageEventListeners = jest.fn()
 component.imageLoad.getElementsByTagName = jest.fn(() => [])
 
-describe('componentWillMount', () => {
+describe('timingSetup', () => {
   describe('delay', () => {
     it('sets _delay to 0 if not described', () => {
       component.props.delay = null
-      component.componentWillMount()
+      component.timingSetup()
       expect(component._delay).toEqual(0)
     })
     it('sets _delay properly if delay is defined', () => {
       component.props.delay = 1000
-      component.componentWillMount()
+      component.timingSetup()
       expect(component._delay).toEqual(1000)
     })
   })
   describe('timeout', () => {
     it('sets _timeout to default (7000) if not described', () => {
       component.props.timeout = null
-      component.componentWillMount()
+      component.timingSetup()
       expect(component._timeout).toEqual(7000)
     })
     it('sets _timeout properly if timeout is defined', () => {
       component.props.timeout = 1000
-      component.componentWillMount()
+      component.timingSetup()
       expect(component._timeout).toEqual(1000)
     })
   })
 })
 
 describe('componentDidMount', () => {
+  beforeEach(() => {
+    component.timingSetup = jest.fn()
+  })
+
   describe('mount status', () => {
     it('sets mounted to true', () => {
       component.mounted = false

@@ -11,7 +11,7 @@ export default class OnImagesLoaded extends Component {
 		this._onLoadEvent = this._onLoadEvent.bind(this)
 	}
 
-	componentWillMount() {
+	timingSetup() {
 		this._isInProps('onWillMount') ? this.props.onWillMount() : null
 		let [tempTimeout, tempDelay] = [this.props.timeout, this.props.delay]
 		tempTimeout = (tempTimeout || tempTimeout== 0) ? tempTimeout: 7000
@@ -25,6 +25,7 @@ export default class OnImagesLoaded extends Component {
 	}
 
 	componentDidMount() {
+		this.timingSetup()
 		this.mounted = true
 		this._imgs = this.imageLoad.getElementsByTagName('img')
 		if (this._imgs.length === 0) {
