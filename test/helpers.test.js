@@ -41,7 +41,7 @@ describe('_hasTimedOut', () => {
   it('is false if not mounted', () => {
     const component = new OnImagesLoaded()
     component.mounted = false
-    const timeoutStatus = component._hasTimedOut()
+    const timeoutStatus = component._hasTimedOut
     expect(timeoutStatus).toEqual(false)
   })
 
@@ -49,7 +49,7 @@ describe('_hasTimedOut', () => {
     const component = new OnImagesLoaded()
     component.mounted = true
     component.state.loaded = true
-    const timeoutStatus = component._hasTimedOut()
+    const timeoutStatus = component._hasTimedOut
     expect(timeoutStatus).toEqual(false)
   })
 })

@@ -1,7 +1,11 @@
-import React, {Component} from 'react'
+// @ts-check
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 // travis demands that test be
 // "test": "echo 'no tests yet'",
 // instead of test: jest
+
+const truthy = (el) => ![false, undefined, null].includes(el)
 
 export default class OnImagesLoaded extends Component {
 	constructor(props) {
@@ -15,10 +19,11 @@ export default class OnImagesLoaded extends Component {
 	}
 
 	timingSetup() {
-		this._isInProps('onWillMount') ? this.props.onWillMount() : null
-		let [tempTimeout, tempDelay] = [this.props.timeout, this.props.delay]
-		tempTimeout = (tempTimeout || tempTimeout== 0) ? tempTimeout: 7000
-		this._delay = (tempDelay || tempDelay == 0) ? tempDelay : 0
+		const { onWillMount, delay, timeout } = this.props
+		onWillMount ? onWillMount() : null
+		let [tempTimeout, tempDelay] = [timeout, delay]
+		tempTimeout = truthy(tempTimeout) ? tempTimeout : 7000
+		this._delay = truthy(tempDelay) ? tempDelay : 0
 		this._timeout = Math.max(tempTimeout, this._delay)
 	}
 
@@ -28,24 +33,25 @@ export default class OnImagesLoaded extends Component {
 	}
 
 	componentDidMount() {
+		const { onLoaded, onTimeout, onDidMount } = this.props
 		this.timingSetup()
 		this.mounted = true
 		this._imgs = this.imageLoad.getElementsByTagName('img')
 		if (this._imgs.length === 0) {
-			if (this._isInProps('onLoaded')) {
-				this.props.onLoaded()
-			} else if (this._isInProps('onTimeout')){
-				this.props.onTimeout()
+			if (onLoaded) {
+				onLoaded()
+			} else if (onTimeout) {
+				onTimeout()
 			}
 		} else {
-			this._isInProps('onDidMount') ? this.props.onDidMount() : null
+			onDidMount ? onDidMount() : null
 			this._addImageEventListeners()
 			this._setOnTimeoutEvent()
 		}
 	}
 
 	_addImageEventListeners() {
-		this.setState({imageCount: this._imgs.length}, () => {
+		this.setState({ imageCount: this._imgs.length }, () => {
 			for (let i = 0; i < this._imgs.length; i++) {
 				this._imgs[i].addEventListener('load', this._onLoadEvent)
 			}
@@ -54,27 +60,24 @@ export default class OnImagesLoaded extends Component {
 
 	_removeImageEventListeners() {
 		for (let i = 0; i < this._imgs.length; i++) {
-			this._imgs[i].removeEventListener("load", this._onLoadEvent)
+			this._imgs[i].removeEventListener('load', this._onLoadEvent)
 		}
 	}
 
 	_setOnTimeoutEvent() {
 		setTimeout(() => {
-			this._hasTimedOut() ? this._runOnTimeoutFunction() : null
+			this._hasTimedOut ? this._runOnTimeoutFunction() : null
 		}, this._timeout)
-	}
-
-	_isInProps(prop) {
-		return prop in this.props
 	}
 
 	_runOnTimeoutFunction() {
 		if (this.mounted) {
-			this.setState({loaded: true}, () => {
-				if (this._isInProps('onTimeout')) {
-					this.props.onTimeout()
-				} else if (this._isInProps('onLoaded')){
-					this.props.onLoaded()
+			const { onTimeout, onLoaded } = this.props
+			this.setState({ loaded: true }, () => {
+				if (onTimeout) {
+					onTimeout()
+				} else if (onLoaded) {
+					onLoaded()
 				}
 			})
 		}
@@ -84,34 +87,40 @@ export default class OnImagesLoaded extends Component {
 		if (this.mounted) {
 			this.setState({ loadCounter: this.state.loadCounter + 1 }, () => {
 				setTimeout(() => {
-					this._hasBeenFullyAndProperlyLoaded() ? this._runOnLoadFunction() : null
+					this._hasBeenFullyAndProperlyLoaded ? this._runOnLoadFunction() : null
 				}, this._delay)
 			})
 		}
 	}
 
-	_hasBeenFullyAndProperlyLoaded() {
-		return this.mounted && (this.state.loadCounter >= this.state.imageCount) && !this.state.loaded
+	get _hasBeenFullyAndProperlyLoaded() {
+		const { loadCounter, imageCount, loaded } = this.state
+		return this.mounted && (loadCounter >= imageCount) && !loaded
 	}
 
-	_hasTimedOut() {
+	get _hasTimedOut() {
 		return this.mounted && !this.state.loaded
+	}
+
+	get _hasDefinedClassName() {
+		const { classNameOnLoaded, classNameOnMount, className } = this.props
+		return !!(classNameOnLoaded || classNameOnMount || className)
 	}
 
 	_runOnLoadFunction() {
 		if (this.mounted) {
-			this.setState({loaded: true, timedOut: false}, () => {
-				this._isInProps('onLoaded') ? this.props.onLoaded() : null
+			const { onLoaded } = this.props
+			this.setState({ loaded: true, timedOut: false }, () => {
+				onLoaded ? onLoaded() : null
 			})
 		}
 	}
 
 	_depreciatedClassNameHandler() {
 		const { className, classNameOnLoaded, classNameOnMount } = this.props
-		const classNames = { className, classNameOnLoaded, classNameOnMount	}
 		if (className) {
 			return className
-		} else if (!this.state.loaded){
+		} else if (!this.state.loaded) {
 			return classNameOnMount
 		} else {
 			return classNameOnLoaded
@@ -119,17 +128,28 @@ export default class OnImagesLoaded extends Component {
 	}
 
 	render() {
-		const hasDefinedClassName = this._isInProps('classNameOnLoaded') || this._isInProps('classNameOnMount') || this._isInProps('className')
-		if (this.imageLoad && hasDefinedClassName) {
+		if (this.imageLoad && this._hasDefinedClassName) {
 			this.imageLoad.className = this._depreciatedClassNameHandler()
 		}
 		return (
 			<div>
 				{this.state.loaded ? null : this.props.placeholder}
-				<div ref={(ctx) => { this.imageLoad = ctx}}>
+				<div ref={(ctx) => { this.imageLoad = ctx }}>
 					{this.props.children}
 				</div>
 			</div>
 		)
 	}
+}
+
+OnImagesLoaded.propTypes = {
+	onTimeout: PropTypes.func,
+	onLoaded: PropTypes.func.isRequired,
+	delay: PropTypes.number,
+	// depreciated 
+	onDidMount: PropTypes.func,
+	onWillMount: PropTypes.func,
+	classNameOnLoaded: PropTypes.string,
+	classNameOnMount: PropTypes.string,
+	className: PropTypes.string,
 }
