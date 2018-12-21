@@ -32,46 +32,39 @@ var OnImagesLoaded = require('react-on-images-loaded');
 
 ### Controlling images in a ternary (important!)
 OnImagesLoaded uses `getElementsByTagName`. It can't find images that are not loaded in the DOM. Controlling it with a ternary will not work for components that are completely unmounted! Use inline styles or `className` CSS to toggle visual hiding instead.
-```jsx
-var OnImagesLoaded = require('react-on-images-loaded');
-// bad
-render() {
-  return (
-    <div>
-      <OnImagesLoaded
-        onLoaded={() => this.setState({showImages: true})}
-        onTimeout={() => this.setState({showImages: true})}
-        timeout={7000}
-      >
-        {this.state.showImages ? <ComponentWithImages/> : <Loading/>}
-      </OnImagesLoaded>
-    </div>
-  )
-}
-```
 
 ```jsx
 var OnImagesLoaded = require('react-on-images-loaded');
-// good
-render() {
-  var hiddenStyle = {height: 0, overflow: 'hidden'};
-  var visibleStyle = {};
-  return (
-    <div>
-      <div style={this.state.showImages ? hiddenStyle : visibleStyle}>
-        <OnImagesLoaded
-          onLoaded={() => this.setState({showImages: true})}
-          onTimeout={() => this.setState({showImages: true})}
-          timeout={7000}
-        >
-          <ComponentWithImages/>
-        </OnImagesLoaded>
+class Parent extends React.Component {
+  render() {
+    return (
+      <div>
+        {this.props.images.length > 0 ? <ImageElements images={this.props.images} /> : <LoadingState />}
       </div>
-      <div style={this.state.showImages ? visibleStyle : hiddenStyle}>
-        <Loading/>
-      </div>
-    </div>
-  )
+    )
+  }
+}
+
+class ImageElements extends React.Component {
+  constructor() {
+    super()
+    this.state = {
+      showImages: false
+    }
+  }
+  render() {
+    return (
+      <OnImagesLoaded
+        onLoaded={() => this.setState({ showImages: true })}
+        onTimeout={() => this.setState({ showImages: true })}
+        timeout={7000}
+      >
+        <div style={{ opacity: this.state.showImages ? 1 : 0 }}>
+          {this.props.images.map(imgUrl => <img src={imgUrl} />)}
+        </div>
+      </OnImagesLoaded>
+    )
+  }
 }
 ```
 
