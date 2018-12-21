@@ -31,7 +31,7 @@ var OnImagesLoaded = require('react-on-images-loaded');
 ```
 
 ### Controlling images in a ternary (important!)
-OnImagesLoaded uses `getElementsByTagName`. It can't find images that are not loaded in the DOM. Controlling it with a ternary will not work for components that are completely unmounted! Use inline styles or `className` CSS to toggle visual hiding instead.
+OnImagesLoaded uses `getElementsByTagName`. It can't find images that are not loaded in the DOM. Make sure the images exist when `OnImagesLoaded` mounts.
 
 ```jsx
 var OnImagesLoaded = require('react-on-images-loaded');
@@ -76,13 +76,7 @@ class ImageElements extends React.Component {
 | timeout | Time (ms) to wait before resolving component before all images are loaded. default: 7000 |
 
 
-### Redux users, please read
-Redux will initially load your default state if you let your component asynchronously load. Your default state does not have your images. In one way or another, ensure all <code>img</code> elements are in your store and ready to be rendered before <code>OnImagesLoaded</code> mounts.
-
 ### Notes
-Big changes, going into v2.x.x. All you get (and all you need) is the <code>onLoaded</code> and <code>onTimeout</code> function.
-
-v1.x.x was bloated. It gives too many options for such a basic concept. Every depreciated prop can be handled with <code>this.setState</code> or is completely unnecessary. All depreciated props will never be removed. The following are depreciated from v1.x.x:
 
 | Depreciated props | Information|
 |---|---|
