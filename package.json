@@ -1,6 +1,6 @@
 {
   "name": "react-on-images-loaded",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "description": "OnImagesLoaded",
   "main": "lib/OnImagesLoaded.js",
   "author": "Andrew Yueh",
