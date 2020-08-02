@@ -19,11 +19,11 @@ npm install react-on-images-loaded --save
 Use `OnImagesLoaded` as a parent container to HTML elements. The function call is triggered after all images are fully loaded.
 
 ```jsx
-var OnImagesLoaded = require('react-on-images-loaded');
+import OnImagesLoaded from 'react-on-images-loaded';
 
 <OnImagesLoaded
-  onLoaded={this.runAfterImagesLoaded.bind(this)}
-  onTimeout={this.runTimeoutFunction.bind(this)}
+  onLoaded={this.runAfterImagesLoaded}
+  onTimeout={this.runTimeoutFunction}
   timeout={7000}
 >
   {'child HTML elements and components with images'}
@@ -34,7 +34,7 @@ var OnImagesLoaded = require('react-on-images-loaded');
 OnImagesLoaded uses `getElementsByTagName`. It can't find images that are not loaded in the DOM. Make sure the images exist when `OnImagesLoaded` mounts.
 
 ```jsx
-var OnImagesLoaded = require('react-on-images-loaded');
+import OnImagesLoaded from 'react-on-images-loaded'
 class Parent extends React.Component {
   render() {
     return (
