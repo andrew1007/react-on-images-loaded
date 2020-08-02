@@ -1,0 +1,10 @@
+.editorconfig
+.eslintignore
+.eslintrc
+.gitignore
+.travis.yml
+bower.json
+gulpfile.js
+example
+test
+src
