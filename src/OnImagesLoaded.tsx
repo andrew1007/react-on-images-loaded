@@ -1,8 +1,5 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-// travis demands that test be
-// "test": "echo 'no tests yet'",
-// instead of test: jest
 
 type props = {
 	onLoaded: () => void;
@@ -110,6 +107,7 @@ export default class OnImagesLoaded extends Component<props, state> {
 	}
 
 	_runTimeout() {
+		console.log('TIMEOUT')
 		if (this.mounted) {
 			const { onTimeout, onLoaded } = this.props
 			this.setState({ loaded: true }, () => {
@@ -147,6 +145,7 @@ export default class OnImagesLoaded extends Component<props, state> {
 	}
 
 	_runOnLoadFunction() {
+		console.log('FULLY LOADED')
 		if (this.mounted) {
 			const { onLoaded } = this.props
 			this.setState({ loaded: true, timedOut: false }, () => {
