@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-type props = {
+export type Props = {
 	onLoaded: () => void;
 	onTimeout?: () => void;
 	timeout?: number;
@@ -12,6 +12,7 @@ type props = {
 	classNameOnMount?: string;
 	className?: string;
 	placeholder: React.ReactElement;
+	children: React.ReactElement | React.ReactElement[]
 };
 
 type state = {
@@ -21,7 +22,7 @@ type state = {
 	timedOut: boolean;
 };
 
-export default class OnImagesLoaded extends Component<props, state> {
+export default class OnImagesLoaded extends Component<Props, state> {
 	static propTypes = {
 		onTimeout: PropTypes.func,
 		onLoaded: PropTypes.func.isRequired,
@@ -40,7 +41,7 @@ export default class OnImagesLoaded extends Component<props, state> {
 	_imgs: any[]
 	imageLoad: HTMLDivElement | null
 
-	constructor(props: props) {
+	constructor(props: Props) {
 		super(props)
 		this.state = {
 			loaded: false,
@@ -107,7 +108,6 @@ export default class OnImagesLoaded extends Component<props, state> {
 	}
 
 	_runTimeout() {
-		console.log('TIMEOUT')
 		if (this.mounted) {
 			const { onTimeout, onLoaded } = this.props
 			this.setState({ loaded: true }, () => {
@@ -145,7 +145,6 @@ export default class OnImagesLoaded extends Component<props, state> {
 	}
 
 	_runOnLoadFunction() {
-		console.log('FULLY LOADED')
 		if (this.mounted) {
 			const { onLoaded } = this.props
 			this.setState({ loaded: true, timedOut: false }, () => {
