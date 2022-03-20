@@ -17,14 +17,14 @@ const Placeholder = () => <div data-testid="placeholder" />
 const createImages = (count: number) => {
     return Array(count)
         .fill(null)
-        .map((_, idx) => <img data-testid="img" key={Math.random()} src="" />)
+        .map(() => <img data-testid="img" key={Math.random()} src="" />)
 }
 
-describe('OnImagesLoaded', () => {
+describe('OnImagesLoaded Events', () => {
     beforeEach(() => {
         jest.clearAllMocks()
     })
-    describe('events', () => {
+    describe('base events', () => {
         it('successfully invokes loading', async () => {
             const {
                 queryAllByTestId
@@ -83,35 +83,6 @@ describe('OnImagesLoaded', () => {
             await sleep()
             expect(failFn).not.toBeCalled()
             expect(successFn).toBeCalled()
-        })
-    })
-
-    describe('placeholder', () => {
-        it('renders placeholder during loading', () => {
-            const {
-                queryByTestId
-            } = makeRender({
-                onLoaded: successFn,
-                placeholder: <Placeholder />,
-                timeout: 200,
-                children: createImages(2)
-            })
-            const placeholder = queryByTestId('placeholder')
-            expect(placeholder).toBeTruthy()
-        })
-
-        it('does not render placeholder after loading is resolved', async () => {
-            const {
-                queryByTestId
-            } = makeRender({
-                onLoaded: successFn,
-                placeholder: <Placeholder />,
-                timeout: 200,
-                children: createImages(2)
-            })
-            await sleep()
-            const placeholder = queryByTestId('placeholder')
-            expect(placeholder).toBeFalsy()
         })
     })
 
