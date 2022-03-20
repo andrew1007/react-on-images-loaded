@@ -1,14 +1,15 @@
-import React from 'react'
-import images from './images'
-import OnImagesLoaded from 'react-on-images-loaded'
-import LoadingSpinner from '../loading_spinner'
+import React from 'react';
+import images from './images';
+import OnImagesLoaded from 'react-on-images-loaded';
+import LoadingSpinner from '../loading_spinner';
+import PropTypes from 'prop-types';
 
 const DepreciatedTest = props => {
   const imgs = images.map((url, idx) => (
     <div key={idx} className='image'>
-      <img src={url + "?" + (new Date()).getTime()} className='image'/>
+      <img src={url + '?' + (new Date()).getTime()} className='image'/>
     </div>
-  ))
+  ));
 
   return (
     <OnImagesLoaded
@@ -22,7 +23,11 @@ const DepreciatedTest = props => {
           {imgs}
         </div>
     </OnImagesLoaded>
-  )
-}
+  );
+};
 
-export default DepreciatedTest
+export default DepreciatedTest;
+
+DepreciatedTest.propTypes = {
+  showError: PropTypes.bool
+};

@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 const ShowCss = _ => (
   <div className='css-container'>
@@ -39,6 +39,6 @@ const ShowCss = _ => (
 }`}</code></pre>
   </div>
 </div>
-)
+);
 
-export default ShowCss
+export default ShowCss;
