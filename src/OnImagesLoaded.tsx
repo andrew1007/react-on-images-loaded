@@ -5,24 +5,24 @@ import PropTypes from 'prop-types'
 // instead of test: jest
 
 type props = {
-	onLoaded: () => void
-	onTimeout?: () => void
-	timeout?: number
-	delay?: number
-	onWillMount?: () => void
-	onDidMount?: () => void
-	classNameOnLoaded?: string
-	classNameOnMount?: string
-	className?: string
-	placeholder: React.ReactElement
-}
+	onLoaded: () => void;
+	onTimeout?: () => void;
+	timeout?: number;
+	delay?: number;
+	onWillMount?: () => void;
+	onDidMount?: () => void;
+	classNameOnLoaded?: string;
+	classNameOnMount?: string;
+	className?: string;
+	placeholder: React.ReactElement;
+};
 
 type state = {
-	loaded: boolean
-	loadCounter: number
-	imageCount: number
-	timedOut: boolean
-}
+	loaded: boolean;
+	loadCounter: number;
+	imageCount: number;
+	timedOut: boolean;
+};
 
 export default class OnImagesLoaded extends Component<props, state> {
 	static propTypes = {
@@ -83,7 +83,7 @@ export default class OnImagesLoaded extends Component<props, state> {
 				onTimeout()
 			}
 		} else {
-			onDidMount ? onDidMount() : null
+			onDidMount?.()
 			this._addImageListeners()
 			this._setOnTimeoutEvent()
 		}

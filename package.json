@@ -14,19 +14,33 @@
     "url": "https://github.com/andrew1007/react-on-images-loaded/issues"
   },
   "devDependencies": {
+    "@babel/preset-react": "^7.16.7",
+    "@types/enzyme": "^3.10.11",
+    "@types/jest": "^26.0.24",
+    "@types/jest-expect-message": "^1.0.3",
+    "@types/jest-matcher-utils": "^25.1.0",
     "@types/prop-types": "^15.7.4",
     "@types/react": "^17.0.41",
+    "@wojtekmaj/enzyme-adapter-react-17": "^0.6.6",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^27.5.1",
     "babel-loader": "^8.1.0",
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.6",
     "eslint": "^8.11.0",
     "eslint-plugin-react": "^7.29.4",
-    "jest": "^26.2.2",
+    "jest": "^26.6.3",
+    "jest-circus": "^27.5.1",
+    "jest-expect-message": "^1.0.2",
+    "jest-matcher-utils": "^26.6.2",
+    "jest-watch-typeahead": "0.6.1",
     "prop-types": "^15.8.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "ts-jest": "^26.5.5",
+    "ts-node": "^10.7.0",
     "typescript": "^4.6.2"
   },
   "peerDependencies": {
@@ -42,7 +56,7 @@
     "publish:site": "NODE_ENV=production gulp publish:examples",
     "release": "NODE_ENV=production gulp release",
     "start": "gulp dev",
-    "test": "echo 'no tests yet'",
+    "test": "jest --watch",
     "watch": "gulp watch:lib"
   },
   "keywords": [
