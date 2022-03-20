@@ -4,15 +4,17 @@ import PropTypes from 'prop-types'
 export type Props = {
 	onLoaded: () => void;
 	onTimeout?: () => void;
+	onUpdate?: () => void;
 	timeout?: number;
 	delay?: number;
+	children: React.ReactElement | React.ReactElement[]
+	// deprecated
+	placeholder?: React.ReactElement;
 	onWillMount?: () => void;
 	onDidMount?: () => void;
 	classNameOnLoaded?: string;
 	classNameOnMount?: string;
 	className?: string;
-	placeholder: React.ReactElement;
-	children: React.ReactElement | React.ReactElement[]
 };
 
 type state = {
@@ -27,7 +29,9 @@ export default class OnImagesLoaded extends Component<Props, state> {
 		onTimeout: PropTypes.func,
 		onLoaded: PropTypes.func.isRequired,
 		delay: PropTypes.number,
-		// depreciated 
+		onUpdate: PropTypes.func,
+		// depreciated
+		placeholder: PropTypes.element,
 		onDidMount: PropTypes.func,
 		onWillMount: PropTypes.func,
 		classNameOnLoaded: PropTypes.string,
