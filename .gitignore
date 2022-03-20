@@ -15,6 +15,7 @@ coverage.html
 
 # Dependency directory
 node_modules
+lib
 
 # Example build directory
 example
