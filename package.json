@@ -14,15 +14,16 @@
     "url": "https://github.com/andrew1007/react-on-images-loaded/issues"
   },
   "devDependencies": {
+    "@babel/eslint-parser": "^7.17.0",
     "@babel/preset-react": "^7.16.7",
+    "@testing-library/jest-dom": "^5.16.2",
+    "@testing-library/react": "^12.1.4",
     "@types/enzyme": "^3.10.11",
     "@types/jest": "^26.0.24",
-    "@types/jest-expect-message": "^1.0.3",
     "@types/jest-matcher-utils": "^25.1.0",
     "@types/prop-types": "^15.7.4",
     "@types/react": "^17.0.41",
     "@wojtekmaj/enzyme-adapter-react-17": "^0.6.6",
-    "babel-eslint": "^10.1.0",
     "babel-jest": "^27.5.1",
     "babel-loader": "^8.1.0",
     "babel-preset-env": "^1.7.0",
@@ -33,9 +34,9 @@
     "eslint-plugin-react": "^7.29.4",
     "jest": "^26.6.3",
     "jest-circus": "^27.5.1",
-    "jest-expect-message": "^1.0.2",
     "jest-matcher-utils": "^26.6.2",
     "jest-watch-typeahead": "0.6.1",
+    "mutation-observer": "^1.0.3",
     "prop-types": "^15.8.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -62,6 +63,5 @@
   "keywords": [
     "react",
     "react-component"
-  ],
-  "type": "module"
+  ]
 }
