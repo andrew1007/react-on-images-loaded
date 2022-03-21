@@ -3,3 +3,4 @@
 
 # Dependency directory
 node_modules
+*.parcel-cache*
