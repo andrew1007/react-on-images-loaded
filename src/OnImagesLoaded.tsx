@@ -24,6 +24,8 @@ type state = {
 	timedOut: boolean;
 };
 
+const noop = () => null
+
 export default class OnImagesLoaded extends Component<Props, state> {
 	static propTypes = {
 		onTimeout: PropTypes.func,
@@ -44,6 +46,7 @@ export default class OnImagesLoaded extends Component<Props, state> {
 	mounted: boolean
 	_imgs: any[]
 	imageLoad: HTMLDivElement | null
+	observer: MutationObserver
 
 	constructor(props: Props) {
 		super(props)
@@ -59,6 +62,7 @@ export default class OnImagesLoaded extends Component<Props, state> {
 		this.mounted = false
 		this._imgs = []
 		this.imageLoad = null
+		this.observer = new MutationObserver(noop)
 	}
 
 	timingSetup() {
@@ -71,6 +75,25 @@ export default class OnImagesLoaded extends Component<Props, state> {
 	componentWillUnmount() {
 		this.mounted = false
 		this._imgs.length > 0 ? this._removeImageListeners() : null
+	}
+
+	observe() {
+		const config = { attributes: true, childList: true, subtree: true };
+		this.observer = new MutationObserver((mutationsList) => {
+			for (const mutation of mutationsList) {
+				if (mutation.type === 'childList') {
+					mutation.removedNodes.forEach(node => {
+						node.removeEventListener('load', this._onLoad)
+					})
+					mutation.addedNodes.forEach(node => {
+						node.addEventListener('load', this._onLoad)
+					})
+				}
+			}
+		})
+		if (this.imageLoad) {
+			this.observer.observe(this.imageLoad, config)
+		}
 	}
 
 	componentDidMount() {
@@ -88,6 +111,7 @@ export default class OnImagesLoaded extends Component<Props, state> {
 			onDidMount?.()
 			this._addImageListeners()
 			this._setOnTimeoutEvent()
+			this.observe()
 		}
 	}
 
