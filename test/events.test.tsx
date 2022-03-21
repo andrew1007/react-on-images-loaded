@@ -54,10 +54,8 @@ describe('OnImagesLoaded Events', () => {
                 children: createImages(2)
             })
 
-            for (const image of queryAllByTestId('img')) {
-                fireEvent.load(image)
-                break
-            }
+            // fire event for only one image
+            fireEvent.load(queryAllByTestId('img')[0])
 
             await sleep()
             expect(failFn).toBeCalled()
