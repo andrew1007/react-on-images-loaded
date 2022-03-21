@@ -40,10 +40,10 @@ describe('OnImagesLoaded Events', () => {
             }
 
             await sleep()
-            expect(successFn).toBeCalled()
+            expect(successFn).toBeCalledTimes(1)
         })
 
-        it('invokes onTimeout and not onLoaded if an image fails to load', async () => {
+        it('invokes onTimeout (and not onLoaded) if an image fails to load', async () => {
             const {
                 queryAllByTestId
             } = makeRender({
@@ -58,7 +58,7 @@ describe('OnImagesLoaded Events', () => {
             fireEvent.load(queryAllByTestId('img')[0])
 
             await sleep()
-            expect(failFn).toBeCalled()
+            expect(failFn).toBeCalledTimes(1)
             expect(successFn).not.toBeCalled()
         })
 
@@ -80,144 +80,205 @@ describe('OnImagesLoaded Events', () => {
 
             await sleep()
             expect(failFn).not.toBeCalled()
-            expect(successFn).toBeCalled()
+            expect(successFn).toBeCalledTimes(1)
         })
     })
 
-    describe('adding images after mounting', () => {
-        describe('does not have onUpdate prop', () => {
-            it('appends extra images with no special behavior', async () => {
-                const originalImages = createImages(2)
-                const originalProps: Props = {
-                    onLoaded: successFn,
-                    placeholder: <Placeholder />,
-                    timeout: 200,
-                    children: originalImages
-                }
-                const {
-                    rerender,
-                } = makeRender(originalProps)
+    // describe('adding images after mounting', () => {
+    //     describe('does not have onUpdate prop', () => {
+    //         it('appends extra images with no special behavior', async () => {
+    //             const originalImages = createImages(2)
+    //             const originalProps: Props = {
+    //                 onLoaded: successFn,
+    //                 placeholder: <Placeholder />,
+    //                 timeout: 200,
+    //                 children: originalImages
+    //             }
+    //             const {
+    //                 rerender,
+    //                 queryAllByTestId
+    //             } = makeRender(originalProps)
 
-                await sleep()
+    //             await sleep()
 
-                const newImages = createImages(2)
-                const nextProps = {
-                    ...originalProps,
-                    children: [...originalImages, ...newImages]
-                }
-                rerender(<OnImagesLoaded {...nextProps} />)
-                expect(updateFn).not.toBeCalled()
-            })
-            it('removes images with no special behavior', async () => {
-                const originalImages = createImages(2)
-                const originalProps: Props = {
-                    onLoaded: successFn,
-                    placeholder: <Placeholder />,
-                    timeout: 200,
-                    children: originalImages
-                }
-                const {
-                    rerender,
-                } = makeRender(originalProps)
+    //             const newImages = createImages(2)
+    //             const nextProps = {
+    //                 ...originalProps,
+    //                 children: [...originalImages, ...newImages]
+    //             }
+    //             rerender(<OnImagesLoaded {...nextProps} />)
 
-                await sleep()
+    //             expect(updateFn).not.toBeCalled()
+    //         })
+    //         it('removes images with no special behavior', async () => {
+    //             const originalImages = createImages(2)
+    //             const originalProps: Props = {
+    //                 onLoaded: successFn,
+    //                 placeholder: <Placeholder />,
+    //                 timeout: 200,
+    //                 children: originalImages
+    //             }
+    //             const {
+    //                 rerender,
+    //             } = makeRender(originalProps)
 
-                const nextProps = {
-                    ...originalProps,
-                    children: originalImages.slice(0, 1)
-                }
-                rerender(<OnImagesLoaded {...nextProps} />)
-                expect(updateFn).not.toBeCalled()
-            })
-            it('removes and adds images with no special behavior', async () => {
-                const originalImages = createImages(10)
-                const originalProps: Props = {
-                    onLoaded: successFn,
-                    placeholder: <Placeholder />,
-                    timeout: 200,
-                    children: originalImages
-                }
-                const {
-                    rerender,
-                } = makeRender(originalProps)
-                await sleep()
-                const newImages = createImages(2)
-                const nextProps = {
-                    ...originalProps,
-                    children: [...originalImages.slice(0, 2), ...newImages]
-                }
-                rerender(<OnImagesLoaded {...nextProps} />)
-                expect(updateFn).not.toBeCalled()
-            })
-        })
+    //             await sleep()
 
-        describe('has onUpdate prop', () => {
-            it('invokes extra onUpdate when images are added', async () => {
-                const originalImages = createImages(2)
-                const originalProps: Props = {
-                    onLoaded: successFn,
-                    onUpdate: updateFn,
-                    placeholder: <Placeholder />,
-                    timeout: 200,
-                    children: originalImages
-                }
-                const {
-                    rerender,
-                } = makeRender(originalProps)
+    //             const nextProps = {
+    //                 ...originalProps,
+    //                 children: originalImages.slice(0, 1)
+    //             }
+    //             rerender(<OnImagesLoaded {...nextProps} />)
+    //             expect(updateFn).not.toBeCalled()
+    //         })
+    //         it('removes and adds images with no special behavior', async () => {
+    //             const originalImages = createImages(10)
+    //             const originalProps: Props = {
+    //                 onLoaded: successFn,
+    //                 placeholder: <Placeholder />,
+    //                 timeout: 200,
+    //                 children: originalImages
+    //             }
+    //             const {
+    //                 rerender,
+    //             } = makeRender(originalProps)
+    //             await sleep()
+    //             const newImages = createImages(2)
+    //             const nextProps = {
+    //                 ...originalProps,
+    //                 children: [...originalImages.slice(0, 2), ...newImages]
+    //             }
+    //             rerender(<OnImagesLoaded {...nextProps} />)
+    //             expect(updateFn).not.toBeCalled()
+    //         })
+    //     })
 
-                await sleep()
+    //     describe('has onUpdate prop', () => {
+    //         it('invokes extra onUpdate when images are added', async () => {
+    //             const originalImages = createImages(2)
+    //             const originalProps: Props = {
+    //                 onLoaded: successFn,
+    //                 onUpdate: updateFn,
+    //                 placeholder: <Placeholder />,
+    //                 timeout: 200,
+    //                 children: originalImages
+    //             }
+    //             const {
+    //                 rerender,
+    //                 queryAllByTestId
+    //             } = makeRender(originalProps)
 
-                const newImages = createImages(2)
-                const nextProps = {
-                    ...originalProps,
-                    children: [...originalImages, ...newImages]
-                }
-                rerender(<OnImagesLoaded {...nextProps} />)
-                expect(updateFn).toBeCalled()
-            })
-            it('invokes onUpdate when images are removed', async () => {
-                const originalImages = createImages(2)
-                const originalProps: Props = {
-                    onLoaded: successFn,
-                    onUpdate: updateFn,
-                    placeholder: <Placeholder />,
-                    timeout: 200,
-                    children: originalImages
-                }
-                const {
-                    rerender,
-                } = makeRender(originalProps)
+    //             await sleep()
 
-                await sleep()
+    //             const newImages = createImages(2)
+    //             const nextProps = {
+    //                 ...originalProps,
+    //                 children: [...originalImages, ...newImages]
+    //             }
+    //             rerender(<OnImagesLoaded {...nextProps} />)
 
-                const nextProps = {
-                    ...originalProps,
-                    children: originalImages.slice(0, 1)
-                }
-                rerender(<OnImagesLoaded {...nextProps} />)
-                expect(updateFn).toBeCalled()
-            })
-            it('invokes onUpdate when images are removed and added', async () => {
-                const originalImages = createImages(10)
-                const originalProps: Props = {
-                    onLoaded: successFn,
-                    onUpdate: updateFn,
-                    placeholder: <Placeholder />,
-                    timeout: 200,
-                    children: originalImages
-                }
-                const {
-                    rerender,
-                } = makeRender(originalProps)
-                await sleep()
-                const newImages = createImages(2)
-                const nextProps = {
-                    ...originalProps,
-                    children: [...originalImages.slice(0, 2), ...newImages]
-                }
-                rerender(<OnImagesLoaded {...nextProps} />)
-                expect(updateFn).toBeCalled()
-            })
-        })
-    })
+    //             await sleep()
+
+    //             const next = queryAllByTestId('img')
+    //             for (const image of next) {
+    //                 fireEvent.load(image)
+    //             }
+
+    //             await sleep()
+
+    //             expect(updateFn).toBeCalledTimes(1)
+    //         })
+
+    //         it('invokes multiple times when images are added in batches', async () => {
+    //             const originalImages = createImages(2)
+    //             const originalProps: Props = {
+    //                 onLoaded: successFn,
+    //                 onUpdate: updateFn,
+    //                 placeholder: <Placeholder />,
+    //                 timeout: 200,
+    //                 children: originalImages
+    //             }
+    //             const {
+    //                 rerender,
+    //                 queryAllByTestId
+    //             } = makeRender(originalProps)
+
+    //             await sleep()
+
+    //             const newImages = createImages(2)
+    //             const nextProps = {
+    //                 ...originalProps,
+    //                 children: [...originalImages, ...newImages]
+    //             }
+    //             rerender(<OnImagesLoaded {...nextProps} />)
+
+    //             await sleep()
+
+    //             for (const image of queryAllByTestId('img')) {
+    //                 fireEvent.load(image)
+    //             }
+
+    //             await sleep()
+
+    //             const newNextImage = createImages(2)
+    //             const newNextProps = {
+    //                 ...nextProps,
+    //                 children: [...nextProps.children, ...newNextImage]
+    //             }
+
+    //             rerender(<OnImagesLoaded {...newNextProps} />)
+    //             await sleep()
+
+    //             for (const image of queryAllByTestId('img')) {
+    //                 fireEvent.load(image)
+    //             }
+
+    //             expect(updateFn).toBeCalledTimes(2)
+    //         })
+
+    //         xit('invokes onUpdate when images are removed', async () => {
+    //             const originalImages = createImages(2)
+    //             const originalProps: Props = {
+    //                 onLoaded: successFn,
+    //                 onUpdate: updateFn,
+    //                 placeholder: <Placeholder />,
+    //                 timeout: 200,
+    //                 children: originalImages
+    //             }
+    //             const {
+    //                 rerender,
+    //             } = makeRender(originalProps)
+
+    //             await sleep()
+
+    //             const nextProps = {
+    //                 ...originalProps,
+    //                 children: originalImages.slice(0, 1)
+    //             }
+    //             rerender(<OnImagesLoaded {...nextProps} />)
+    //             expect(updateFn).toBeCalledTimes(1)
+    //         })
+    //         xit('invokes onUpdate when images are removed and added', async () => {
+    //             const originalImages = createImages(10)
+    //             const originalProps: Props = {
+    //                 onLoaded: successFn,
+    //                 onUpdate: updateFn,
+    //                 placeholder: <Placeholder />,
+    //                 timeout: 200,
+    //                 children: originalImages
+    //             }
+    //             const {
+    //                 rerender,
+    //             } = makeRender(originalProps)
+    //             await sleep()
+    //             const newImages = createImages(2)
+    //             const nextProps = {
+    //                 ...originalProps,
+    //                 children: [...originalImages.slice(0, 2), ...newImages]
+    //             }
+    //             rerender(<OnImagesLoaded {...nextProps} />)
+    //             expect(updateFn).toBeCalledTimes(1)
+    //         })
+    //     })
+    // })
 })
