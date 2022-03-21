@@ -14,6 +14,7 @@
     "url": "https://github.com/andrew1007/react-on-images-loaded/issues"
   },
   "devDependencies": {
+    "@babel/eslint-parser": "^7.17.0",
     "@babel/preset-react": "^7.16.7",
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.4",
@@ -23,7 +24,6 @@
     "@types/prop-types": "^15.7.4",
     "@types/react": "^17.0.41",
     "@wojtekmaj/enzyme-adapter-react-17": "^0.6.6",
-    "babel-eslint": "^10.1.0",
     "babel-jest": "^27.5.1",
     "babel-loader": "^8.1.0",
     "babel-preset-env": "^1.7.0",
