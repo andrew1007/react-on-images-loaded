@@ -75,23 +75,28 @@ export default class OnImagesLoaded extends Component<Props, state> {
 	componentWillUnmount() {
 		this.mounted = false
 		this._imgs.length > 0 ? this._removeImageListeners() : null
+		this.observer.disconnect()
 	}
 
-	observe() {
-		const config = { attributes: true, childList: true, subtree: true };
+	initObserver() {
 		this.observer = new MutationObserver((mutationsList) => {
 			for (const mutation of mutationsList) {
 				if (mutation.type === 'childList') {
 					mutation.removedNodes.forEach(node => {
-						node.removeEventListener('load', this._onLoad)
+						if (node.nodeName === 'IMG') {
+							node.removeEventListener('load', this._onLoad)
+						}
 					})
 					mutation.addedNodes.forEach(node => {
-						node.addEventListener('load', this._onLoad)
+						if (node.nodeName === 'IMG') {
+							node.addEventListener('load', this._onLoad)
+						}
 					})
 				}
 			}
 		})
 		if (this.imageLoad) {
+			const config = { attributes: true, childList: true, subtree: true };
 			this.observer.observe(this.imageLoad, config)
 		}
 	}
@@ -111,7 +116,7 @@ export default class OnImagesLoaded extends Component<Props, state> {
 			onDidMount?.()
 			this._addImageListeners()
 			this._setOnTimeoutEvent()
-			this.observe()
+			this.initObserver()
 		}
 	}
 
