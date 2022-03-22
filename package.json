@@ -64,8 +64,5 @@
   "keywords": [
     "react",
     "react-component"
-  ],
-  "dependencies": {
-    "react-on-images-loaded": "^2.2.5"
-  }
+  ]
 }
