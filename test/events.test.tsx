@@ -6,7 +6,6 @@ import '@testing-library/jest-dom'
 const sleep = (ms = 300) => new Promise(resolve => setTimeout(resolve, ms))
 const successFn = jest.fn()
 const failFn = jest.fn()
-const updateFn = jest.fn()
 
 const makeRender = (props: Props) => render(
     <OnImagesLoaded {...props} />
