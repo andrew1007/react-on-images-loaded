@@ -9,3 +9,10 @@ example
 test
 src
 tasks
+dist
+.vscode
+.babelrc
+jest.config.cjs
+setupTests.ts
+tsconfig.json
+.parcel-cache

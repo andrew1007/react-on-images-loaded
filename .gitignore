@@ -15,10 +15,13 @@ coverage.html
 
 # Dependency directory
 node_modules
+lib
 
 # Example build directory
-example/dist
 .publish
+lib*
+dist
+.parcel-cache
 
 # Editor and other tmp files
 *.swp

@@ -1,0 +1,26 @@
+{
+  "author": "Andrew Yueh",
+  "source": "src/index.html",
+  "browserslist": "> 0.5%, last 2 versions, not dead",
+  "homepage": "https://andrew1007.github.io/react-on-images-loaded",
+  "dependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-on-images-loaded": "^2.2.6-beta.2",
+    "prop-types": "^15.8.1"
+  },
+  "devDependencies": {
+    "gh-pages": "^3.2.3",
+    "parcel": "^2.3.2"
+  },
+  "scripts": {
+    "start": "npx parcel",
+    "build": "rm -rf ./build && npx parcel build ./src/index.html --public-url ./ --no-source-maps",
+    "deploy": "gh-pages -d dist"
+  },
+  "targets": {
+    "default": {
+      "distDir": "build"
+    }
+  }
+}

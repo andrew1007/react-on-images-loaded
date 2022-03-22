@@ -1,6 +1,6 @@
-import React from 'react'
+import React from 'react';
 
-const ShowCss = _ => (
+const ShowCss = () => (
   <div className='css-container'>
     <div className='css-subcontainer'>
     <h2 className='css-header'>
@@ -39,6 +39,6 @@ const ShowCss = _ => (
 }`}</code></pre>
   </div>
 </div>
-)
+);
 
-export default ShowCss
+export default ShowCss;

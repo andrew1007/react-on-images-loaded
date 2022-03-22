@@ -1,6 +1,6 @@
 {
   "name": "react-on-images-loaded",
-  "version": "2.2.5",
+  "version": "2.2.6-beta.2",
   "description": "OnImagesLoaded",
   "license": "MIT",
   "main": "lib/OnImagesLoaded.js",
@@ -14,21 +14,35 @@
     "url": "https://github.com/andrew1007/react-on-images-loaded/issues"
   },
   "devDependencies": {
-    "babel-eslint": "^4.1.3",
-    "babel-jest": "^21.2.0",
-    "babel-loader": "^7.1.2",
+    "@babel/eslint-parser": "^7.17.0",
+    "@babel/preset-react": "^7.16.7",
+    "@testing-library/jest-dom": "^5.16.2",
+    "@testing-library/react": "^12.1.4",
+    "@types/enzyme": "^3.10.11",
+    "@types/jest": "^26.0.24",
+    "@types/jest-matcher-utils": "^25.1.0",
+    "@types/prop-types": "^15.7.4",
+    "@types/react": "^17.0.41",
+    "@wojtekmaj/enzyme-adapter-react-17": "^0.6.6",
+    "babel-jest": "^27.5.1",
+    "babel-loader": "^8.1.0",
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
-    "eslint": "^1.6.0",
-    "eslint-plugin-react": "^3.5.1",
-    "gulp": "^4.0.2",
-    "gulp-connect": "^5.7.0",
-    "gulp-gh-pages": "^0.5.4",
-    "gulp-git": "^2.10.1",
-    "jest": "^26.2.2",
-    "react": "^16.7.0",
-    "react-component-gulp-tasks": "^0.7.7",
-    "react-dom": "^16.7.0"
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.6",
+    "eslint": "^8.11.0",
+    "eslint-plugin-react": "^7.29.4",
+    "jest": "^26.6.3",
+    "jest-circus": "^27.5.1",
+    "jest-matcher-utils": "^26.6.2",
+    "jest-watch-typeahead": "0.6.1",
+    "mutation-observer": "^1.0.3",
+    "prop-types": "^15.8.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "ts-jest": "^26.5.5",
+    "ts-node": "^10.7.0",
+    "typescript": "^4.6.2"
   },
   "peerDependencies": {
     "react": "*"
@@ -37,20 +51,13 @@
     "react": "global:React"
   },
   "scripts": {
-    "build": "gulp clean && NODE_ENV=production gulp build",
-    "examples": "gulp dev:server",
-    "lint": "eslint ./; true",
-    "publish:site": "NODE_ENV=production gulp publish:examples",
-    "release": "NODE_ENV=production gulp release",
-    "start": "gulp dev",
-    "test": "echo 'no tests yet'",
-    "watch": "gulp watch:lib"
+    "build": "tsc",
+    "start": "tsc -w",
+    "test": "jest --watch",
+    "deploy": "tsc && npm publish"
   },
   "keywords": [
     "react",
     "react-component"
-  ],
-  "dependencies": {
-    "prop-types": "^15.6.2"
-  }
+  ]
 }
