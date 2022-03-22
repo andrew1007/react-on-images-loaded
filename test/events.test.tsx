@@ -88,6 +88,27 @@ describe('OnImagesLoaded Events', () => {
             expect(failFn).not.toBeCalled()
             expect(successFn).toBeCalledTimes(1)
         })
+
+        it('invokes onTimeout (and not onLoaded) if images load too slowly', async () => {
+            const {
+                queryAllByTestId
+            } = makeRender({
+                onLoaded: successFn,
+                onTimeout: failFn,
+                placeholder: null,
+                timeout: 200,
+                children: createImages(2)
+            })
+
+            await sleep()
+
+            for (const image of queryAllByTestId('img')) {
+                fireEvent.load(image)
+            }
+
+            expect(failFn).toBeCalledTimes(1)
+            expect(successFn).not.toBeCalled()
+        })
     })
 
     describe('nested images', () => {
