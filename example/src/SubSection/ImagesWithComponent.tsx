@@ -1,14 +1,23 @@
 import React, { Component } from 'react';
 import images from './images';
 import OnImagesLoaded from 'react-on-images-loaded';
-import LoadingSpinner from '../loading_spinner';
+import LoadingSpinner from './LoadingSpinner';
 import PropTypes from 'prop-types'
-export default class ImagesWithComponent extends Component {
+
+type Props = {
+  showError: () => void
+}
+
+type State = {
+  loaded: boolean
+}
+
+export default class ImagesWithComponent extends Component<Props, State> {
   static propTypes = {
     showError: PropTypes.bool
   }
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       loaded: false,
@@ -28,11 +37,11 @@ export default class ImagesWithComponent extends Component {
     );
   }
 
-  onLoadedHandler() {
+  onLoadedHandler = () => {
     this.setState({ loaded: true });
   }
 
-  handleTimeout() {
+  handleTimeout = () => {
     this.props.showError();
     alert('hit timeout. this is the onTimeout function being run and is mounting normally now');
     this.setState({ loaded: true });
@@ -41,11 +50,11 @@ export default class ImagesWithComponent extends Component {
   render() {
     return (
       <OnImagesLoaded
-        onLoaded={() => this.onLoadedHandler()}
-        onTimeout={() => this.handleTimeout()}
+        onLoaded={this.onLoadedHandler}
+        onTimeout={this.handleTimeout}
         timeout={70000}
       >
-        {this.state.loaded ? null : <LoadingSpinner />}
+        {!this.state.loaded && <LoadingSpinner />}
         {this.images()}
       </OnImagesLoaded>
     );

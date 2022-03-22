@@ -21,6 +21,7 @@ lib
 .publish
 lib*
 dist
+.parcel-cache
 
 # Editor and other tmp files
 *.swp

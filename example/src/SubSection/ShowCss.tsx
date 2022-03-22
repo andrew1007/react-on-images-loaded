@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ShowCss = _ => (
+const ShowCss = () => (
   <div className='css-container'>
     <div className='css-subcontainer'>
     <h2 className='css-header'>

@@ -1,30 +1,44 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import RegularImageLoading from './loaders/regular_image_loading';
-import ImagesWithComponent from './loaders/images_with_component';
-import ShowCss from './show_css';
+import RegularImageLoading from './SubSection/RegularImageLoading';
+import ImagesWithComponent from './SubSection/ImagesWithComponent';
+import ShowCss from './SubSection/ShowCss';
 
-export default class App extends Component {
-	constructor(props) {
+interface State {
+	showError: boolean
+	regular: boolean
+	withComponent: boolean
+	css: boolean
+}
+
+type Props = Record<string, never>
+
+class App extends Component<Props, State> {
+	samples: string[]
+
+	constructor(props: Props) {
 		super(props);
-		this.state = {
-			regular: false,
-			withComponent: false,
-			showError: false
-		};
+		this.state = this.initialState;
 		this.samples = ['regular', 'withComponent', 'css', 'showError'];
 	}
 
-	toggleComponent(name) {
-		let prevState = this.state[name];
-		for (let i of this.samples) {
-			this.setState({[i]: false});
+	initialState = {
+		regular: false,
+		withComponent: false,
+		showError: false,
+		css: false,
+	} as const
+
+	toggleComponent(name: keyof State) {
+		const next: State = {
+			...this.initialState,
+			[name]: true
 		}
-		this.setState({[name]: prevState ? false : true});
+		this.setState(next);
 	}
 
-	showError() {
-		this.setState({showError: true});
+	showError = () => {
+		this.setState({ showError: true });
 	}
 
 	error() {
@@ -36,8 +50,7 @@ export default class App extends Component {
 		);
 	}
 
-	render () {
-		const imagesWithComponentProps = {showError: () => this.showError()};
+	render() {
 		return (
 			<div className='container'>
 				<div className='subcontainer'>
@@ -55,9 +68,9 @@ export default class App extends Component {
 					<div>
 						{this.state.showError ? this.error() : null}
 					</div>
-					{ this.state.regular ? <RegularImageLoading/> : null}
-					{ this.state.withComponent ? <ImagesWithComponent {...imagesWithComponentProps}/> : null}
-					{ this.state.css ? <ShowCss/> : null}
+					{this.state.regular && <RegularImageLoading />}
+					{this.state.withComponent && <ImagesWithComponent showError={this.showError} />}
+					{this.state.css && <ShowCss />}
 				</div>
 			</div>
 		);
