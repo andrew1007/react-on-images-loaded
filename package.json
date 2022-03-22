@@ -52,13 +52,8 @@
   },
   "scripts": {
     "build": "tsc",
-    "examples": "gulp dev:server",
-    "lint": "eslint ./; true",
-    "publish:site": "NODE_ENV=production gulp publish:examples",
-    "release": "NODE_ENV=production gulp release",
-    "start": "gulp dev",
-    "test": "jest --watch",
-    "watch": "gulp watch:lib"
+    "start": "tsc -w",
+    "test": "jest --watch"
   },
   "keywords": [
     "react",
