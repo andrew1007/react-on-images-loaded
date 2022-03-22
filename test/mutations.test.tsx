@@ -29,6 +29,10 @@ const createImages = (count: number) => {
 const Placeholder = () => <div data-testid="placeholder" />
 
 describe('Mutations', () => {
+    beforeEach(() => {
+        jest.clearAllMocks()
+    })
+
     describe('does not have onUpdate props', () => {
         it('appends extra images with no special behavior', async () => {
             const originalImages = createImages(2)
@@ -53,6 +57,7 @@ describe('Mutations', () => {
 
             expect(updateStartFn).not.toBeCalled()
         })
+
         it('removes images with no special behavior', async () => {
             const originalImages = createImages(2)
             const originalProps: Props = {
@@ -75,6 +80,7 @@ describe('Mutations', () => {
             expect(updateStartFn).not.toBeCalled()
             expect(updateEndFn).not.toBeCalled()
         })
+
         it('removes and adds images with no special behavior', async () => {
             const originalImages = createImages(10)
             const originalProps: Props = {
@@ -210,6 +216,7 @@ describe('Mutations', () => {
 
             expect(updateStartFn).toBeCalledTimes(1)
         })
+
         it('invokes onUpdateStart and End when images are removed and added', async () => {
             const originalImages = createImages(10)
             const originalProps: Props = {
