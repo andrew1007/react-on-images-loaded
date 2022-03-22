@@ -15,11 +15,12 @@
   },
   "scripts": {
     "start": "npx parcel",
-    "deploy": "npx parcel build && gh-pages -d build"
+    "build": "rm -rf ./build && npx parcel build ./src/index.html --public-url ./ --no-source-maps",
+    "deploy": "gh-pages -d dist"
   },
   "targets": {
     "default": {
-      "distDir": "./build"
+      "distDir": "build"
     }
   }
 }

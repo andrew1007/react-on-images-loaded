@@ -14,7 +14,7 @@ type State = {
 
 export default class ImagesWithComponent extends Component<Props, State> {
   static propTypes = {
-    showError: PropTypes.bool
+    showError: PropTypes.func
   }
 
   constructor(props: Props) {
