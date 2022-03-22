@@ -23233,7 +23233,7 @@ class ImagesWithComponent extends _react.Component {
     }
 }
 ImagesWithComponent.propTypes = {
-    showError: _propTypesDefault.default.bool
+    showError: _propTypesDefault.default.func
 };
 
   $parcel$ReactRefreshHelpers$077a.postlude(module);
