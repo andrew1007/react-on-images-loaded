@@ -1,7 +1,5 @@
 # OnImagesLoaded
 
-[![Build Status](https://travis-ci.org/andrew1007/react-on-images-loaded.svg?branch=master)](https://travis-ci.org/andrew1007/react-on-images-loaded)
-
 [OnImagesLoaded](https://github.com/andrew1007/react-on-images-loaded) Control an action after every image is fully loaded, for HTML elements wrapped inside <code>OnImagesLoaded</code>.
 
 ## Demo
