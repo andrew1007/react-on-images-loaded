@@ -12,7 +12,13 @@ const makeRender = (props: Props) => render(
     <OnImagesLoaded {...props} />
 )
 
-const Placeholder = () => <div data-testid="placeholder" />
+const NestedImageComponent: React.FC<{ size: number }> = (props) => {
+    return (
+        <div>
+            {createImages(props.size)}
+        </div>
+    )
+}
 
 const createImages = (count: number) => {
     return Array(count)
@@ -81,6 +87,49 @@ describe('OnImagesLoaded Events', () => {
             await sleep()
             expect(failFn).not.toBeCalled()
             expect(successFn).toBeCalledTimes(1)
+        })
+    })
+
+    describe('nested images', () => {
+        it('finds images in nested components', async () => {
+            const {
+                queryAllByTestId
+            } = makeRender({
+                onLoaded: successFn,
+                onTimeout: failFn,
+                placeholder: null,
+                timeout: 200,
+                children: <NestedImageComponent size={20} />
+            })
+            for (const image of queryAllByTestId('img')) {
+                fireEvent.load(image)
+            }
+
+            await sleep()
+            expect(successFn).toBeCalledTimes(1)
+        })
+        it('does not succeed if images nested at any level do not load within timeout', async () => {
+            const {
+                queryAllByTestId
+            } = makeRender({
+                onLoaded: successFn,
+                onTimeout: failFn,
+                placeholder: null,
+                timeout: 200,
+                children: (
+                    <div>
+                        <NestedImageComponent size={20} />,
+                        {createImages(2)}
+                    </div>
+                )
+            })
+            for (const image of queryAllByTestId('img').slice(0, 21)) {
+                fireEvent.load(image)
+            }
+
+            await sleep()
+            expect(failFn).toBeCalledTimes(1)
+            expect(successFn).not.toBeCalled()
         })
     })
 
