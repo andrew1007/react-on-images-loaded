@@ -46,7 +46,7 @@ export default class OnImagesLoaded extends Component<Props, state> {
 	private mounted: boolean
 	private _imgs: any[]
 	private imageLoad: HTMLDivElement | null
-	private observer: MutationObserver
+	// private observer: MutationObserver
 	private invokedCount: number
 
 	constructor(props: Props) {
@@ -64,7 +64,7 @@ export default class OnImagesLoaded extends Component<Props, state> {
 		this.mounted = false
 		this._imgs = []
 		this.imageLoad = null
-		this.observer = new MutationObserver(noop)
+		// this.observer = new MutationObserver(noop)
 		this.invokedCount = 0
 	}
 
@@ -78,36 +78,36 @@ export default class OnImagesLoaded extends Component<Props, state> {
 	componentWillUnmount() {
 		this.mounted = false
 		this._imgs.length > 0 ? this._removeImageListeners() : null
-		this.observer.disconnect()
+		// this.observer.disconnect()
 	}
 
-	private initObserver() {
-		this.observer = new MutationObserver((mutationsList) => {
-			for (const mutation of mutationsList) {
-				if (mutation.type !== 'childList') return
-				const { imageCount } = this.state
-				const nextCount = imageCount + mutation.addedNodes.length - mutation.removedNodes.length
-				this.setState({
-					imageCount: nextCount
-				}, () => {
-					mutation.removedNodes.forEach(node => {
-						if (node.nodeName === 'IMG') {
-							node.addEventListener('load', this._onUpdate)
-						}
-					})
-					mutation.addedNodes.forEach(node => {
-						if (node.nodeName === 'IMG') {
-							node.addEventListener('load', this._onUpdate)
-						}
-					})
-				})
-			}
-		})
-		if (this.imageLoad) {
-			const config = { attributes: true, childList: true, subtree: true };
-			this.observer.observe(this.imageLoad, config)
-		}
-	}
+	// private initObserver() {
+	// 	this.observer = new MutationObserver((mutationsList) => {
+	// 		for (const mutation of mutationsList) {
+	// 			if (mutation.type !== 'childList') return
+	// 			const { imageCount } = this.state
+	// 			const nextCount = imageCount + mutation.addedNodes.length - mutation.removedNodes.length
+	// 			this.setState({
+	// 				imageCount: nextCount
+	// 			}, () => {
+	// 				mutation.removedNodes.forEach(node => {
+	// 					if (node.nodeName === 'IMG') {
+	// 						node.addEventListener('load', this._onUpdate)
+	// 					}
+	// 				})
+	// 				mutation.addedNodes.forEach(node => {
+	// 					if (node.nodeName === 'IMG') {
+	// 						node.addEventListener('load', this._onUpdate)
+	// 					}
+	// 				})
+	// 			})
+	// 		}
+	// 	})
+	// 	if (this.imageLoad) {
+	// 		const config = { attributes: true, childList: true, subtree: true };
+	// 		this.observer.observe(this.imageLoad, config)
+	// 	}
+	// }
 
 	private _onUpdate() {
 		if (!this.mounted) return
