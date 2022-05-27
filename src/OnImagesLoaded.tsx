@@ -4,8 +4,8 @@ import PropTypes from 'prop-types'
 export type Props = {
 	onLoaded: () => void;
 	onTimeout?: () => void;
-	onUpdateStart?: () => void;
-	onUpdateEnd?: () => void;
+	// onUpdateStart?: () => void;
+	// onUpdateEnd?: () => void;
 	timeout?: number;
 	delay?: number;
 	children: React.ReactElement | React.ReactElement[]
